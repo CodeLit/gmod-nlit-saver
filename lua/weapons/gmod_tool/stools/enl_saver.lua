@@ -18,7 +18,7 @@ function ENL.Saver:CanProceedEnt(ply,ent)
   local tr = util.TraceLine({start=ply:EyePos(),endpos=ent:WorldSpaceCenter(),
     filter = function(e) if e.SID != ply.SID then return true end end
   })
-  if tr.Hit then Note('Предмет вне поля видимости') return false end
+  // if tr.Hit then Note('Предмет вне поля видимости') return false end
   for _,ent in pairs(ents.FindInSphere(ent:GetPos(),ent:BoundingRadius() or 50)) do
     if ent:IsPlayer() then Note('Игрок блокирует спавн предмета') return false end
   end
@@ -193,10 +193,9 @@ elseif CLIENT then
       timer.Simple(GetSpawnDelay()*(i-1),function()
         if ENL.Saver.Abort then return end
         net.Start(netstr)
-        if useWpos then data.lpos = nil
-        else data.wpos = nil end
+        if !useWPos then data.wpos = nil end
         if i == 1 then data.firstEnt = true end
-        data.useWPos = (useWpos or nil)
+        data.useWPos = (useWPos or nil)
         net.WriteTable(data)
         net.SendToServer()
       end)
