@@ -78,7 +78,7 @@ if SERVER then
     end
     prop.SID = ply.SID
     prop:Spawn()
-    if ply:GetInfo(freezeCvarName) then
+    if tobool(ply:GetInfo(freezeCvarName)) then
       prop:GetPhysicsObject():EnableMotion(true)
     end
     if NCfg:Get('Saver','Create Indestructible Items') then
@@ -130,7 +130,7 @@ elseif CLIENT then
 
   local path = 'enl_saver/saves'
   local wPosCvar = CreateClientConVar('enl_saver_worldposspawns','0')
-  local freezeCvar = CreateClientConVar(freezeCvarName,'0')
+  local freezeCvar = CreateClientConVar(freezeCvarName,'0',true,true)
 
   language.Add('Tool.enl_saver.name', l('Saver'))
   language.Add('Tool.enl_saver.desc', l('Saves groups of items'))
