@@ -229,10 +229,6 @@ elseif CLIENT then
       pnl:Dock(TOP)
       pnl:SetText('')
       pnl:DockMargin(20,10,20,0)
-      pnl.Paint = function(self, w, h)
-        surface.SetDrawColor(50,50,50,240)
-        pnl:DrawFilledRect()
-      end
       
       btn:SetParent(pnl)
       btn:Dock(FILL)
@@ -260,7 +256,9 @@ elseif CLIENT then
         end
       end
     end
+
     edit:Upd()
+
     AddButton(NGUI:AcceptButton('Сохранить предметы', function()
       ENL.Saver:SaveEnts(edit:GetText())
 			self.SavesList:Upd()
