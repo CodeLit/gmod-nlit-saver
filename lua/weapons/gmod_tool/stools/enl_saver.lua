@@ -1,41 +1,14 @@
 TOOL.Category = 'Construction'
 TOOL.Name = '#tool.enl_saver.name'
 
-local netstr = 'ENL Saver'
-local freezeCvarName = 'enl_saver_freeze'
-
-ENL = ENL or {}
-ENL.Saver = ENL.Saver or {}
-
-function ENL.Saver:CanProceedEnt(ply,ent)
-  if !IsValid(ply) or !IsValid(ent) then return end
-  local function Note(text) ply:PrintMessage(HUD_PRINTCENTER,text) end
-  if !table.HasValue(NCfg:Get('Saver','Classes To Save'), ent:GetClass()) then
-    Note('Предмет должен быть пропом')
-    return
-  end
-  if ply:GetPos():Distance(ent:GetPos()) > NCfg:Get('Saver','Max. Items Spawn Distance') then
-    Note('Слишком большое расстояние до предмета') return false end
-  local tr = util.TraceLine({start=ply:EyePos(),endpos=ent:WorldSpaceCenter(),
-    filter = function(e) if e.SID != ply.SID then return true end end
-  })
-  -- if tr.Hit then Note('Предмет вне поля видимости') return false end
-  for _,ent in pairs(ents.FindInSphere(ent:GetPos(),ent:BoundingRadius() or 50)) do
-    if ent:IsPlayer() then Note('Игрок блокирует спавн предмета') return false end
-  end
-  return true
-end
-
 local function GetEntID(ent) return ent:GetCreationID() end
 
 if SERVER then
 
-  util.AddNetworkString(netstr)
-
 	function TOOL:LeftClick(tr)
 	  local ent,ply = tr.Entity,self:GetOwner()
 	  if !table.HasValue(NCfg:Get('Saver','Classes To Save'), ent:GetClass()) then return false end
-    net.Start(netstr)
+    net.Start(ENL.Saver.netstr)
     net.WriteBool(false)
     net.WriteEntity(ent)
     net.Send(ply)
@@ -48,7 +21,7 @@ if SERVER then
 
   local firstEnts = {}
 
-  net.Receive(netstr,function(_,ply)
+  net.Receive(ENL.Saver.netstr,function(_,ply)
     local data = net.ReadTable()
     if !(isvector(data.wpos) or isvector(data.lpos))
     or !isangle(data.wang) or !isstring(data.mdl) then return end
@@ -78,7 +51,7 @@ if SERVER then
     end
     prop.SID = ply.SID
     prop:Spawn()
-    if tobool(ply:GetInfo(freezeCvarName)) then
+    if tobool(ply:GetInfo(ENL.Saver.freezeCvarName)) then
       prop:GetPhysicsObject():EnableMotion(true)
     end
     if NCfg:Get('Saver','Create Indestructible Items') then
@@ -130,7 +103,7 @@ elseif CLIENT then
 
   local path = 'enl_saver/saves'
   local wPosCvar = CreateClientConVar('enl_saver_worldposspawns','0')
-  local freezeCvar = CreateClientConVar(freezeCvarName,'0',true,true)
+  local freezeCvar = CreateClientConVar(ENL.Saver.freezeCvarName,'0',true,true)
 
   language.Add('Tool.enl_saver.name', l('Saver'))
   language.Add('Tool.enl_saver.desc', l('Saves groups of items'))
@@ -198,7 +171,7 @@ elseif CLIENT then
     for i,data in pairs(tbl) do
       timer.Simple(GetSpawnDelay()*(i-1),function()
         if ENL.Saver.Abort then return end
-        net.Start(netstr)
+        net.Start(ENL.Saver.netstr)
         if !useWPos then data.wpos = nil end
         if i == 1 then data.firstEnt = true end
         data.useWPos = (useWPos or nil)
@@ -334,7 +307,7 @@ elseif CLIENT then
     end))
   end
 
-  net.Receive(netstr, function()
+  net.Receive(ENL.Saver.netstr, function()
     local doempty = net.ReadBool()
     local ent = net.ReadEntity()
     if !doempty then
