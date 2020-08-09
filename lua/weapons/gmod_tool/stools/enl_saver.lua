@@ -122,9 +122,9 @@ elseif CLIENT then
   local path = 'enl_saver/saves'
   local convar = CreateClientConVar('enl_saver_worldposspawns','0')
 
-  language.Add('Tool.enl_saver.name', 'Сохранятор')
-  language.Add('Tool.enl_saver.desc', 'Сохраняет связки предметов')
-  language.Add('Tool.enl_saver.0', 'Нажмите на любой предмет, чтобы добавить / удалить его из связки')
+  language.Add('Tool.enl_saver.name', l('Saver'))
+  language.Add('Tool.enl_saver.desc', l('Saves groups of items'))
+  language.Add('Tool.enl_saver.0', l('Click on any of items to add / remove it from the bunch'))
 
 	local function DialogueWindow(question,...)
 
