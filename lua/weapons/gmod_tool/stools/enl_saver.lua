@@ -54,7 +54,7 @@ if SERVER then
 
   local firstEnts = {}
 
-  net.Receive(netstr,function(len,ply)
+  net.Receive(netstr,function(_,ply)
     local data = net.ReadTable()
     if !(isvector(data.wpos) or isvector(data.lpos))
     or !isangle(data.wang) or !isstring(data.mdl) then return end
@@ -327,6 +327,10 @@ elseif CLIENT then
 
     AddButton(NGUI:Button('Обновить сохранения', function() list:Upd() end))
 
+    -- TODO: Сделать функционал сброса
+    AddButton(NGUI:Button('Сбросить выделение', function()
+      ENL.Saver.Ents = {}
+    end))
   end
 
   net.Receive(netstr, function()
