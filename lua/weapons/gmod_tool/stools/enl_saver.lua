@@ -357,9 +357,10 @@ elseif CLIENT then
 
   hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
     if table.Count(ENL.Saver.Ents) > 0 then
-	    local wep, tool = LocalPlayer():GetActiveWeapon(), LocalPlayer():GetTool()
+      local wep, tool = LocalPlayer():GetActiveWeapon(), LocalPlayer():GetTool()
 	    if !IsValid(wep) or wep:GetClass() != 'gmod_tool'
-	    or tool.Mode != 'enl_saver' then return end
+	      or tool.Mode != 'enl_saver' then return end
+    
 	    local haloEnts = {}
 	    for ent, bool in pairs(ENL.Saver.Ents) do
 	      if bool and IsValid(ent) then table.insert(haloEnts, ent)
