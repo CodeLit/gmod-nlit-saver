@@ -10,7 +10,7 @@ function ENL.Saver:CanProceedEnt(ply,ent)
   if !IsValid(ply) or !IsValid(ent) then return end
   local function Note(text) ply:PrintMessage(HUD_PRINTCENTER,text) end
   if ent:GetClass() != 'prop_physics' then Note('Предмет должен быть пропом') return end
-  if ply:GetPos():Distance(ent:GetPos()) > NCfg:Get('Saver','Maximum Items Spawn Distance') then
+  if ply:GetPos():Distance(ent:GetPos()) > NCfg:Get('Saver','Max. Items Spawn Distance') then
     Note('Слишком большое расстояние до предмета') return false end
   local tr = util.TraceLine({start=ply:EyePos(),endpos=ent:WorldSpaceCenter(),
     filter = function(e) if e.SID != ply.SID then return true end end
@@ -74,8 +74,10 @@ if SERVER then
     prop.SID = ply.SID
     prop:Spawn()
 
-    prop:SetVar('Unbreakable',true)
-    prop:Fire('SetDamageFilter','FilterDamage',0)
+    if NCfg:Get('Saver','Create Indestructible Items') then
+      prop:SetVar('Unbreakable',true)
+      prop:Fire('SetDamageFilter','FilterDamage',0)
+    end
 
     gamemode.Call('PlayerSpawnedProp',ply,data.mdl,prop)
 
@@ -199,7 +201,7 @@ elseif CLIENT then
   ENL.Saver.LastSpawn = ENL.Saver.LastSpawn or CurTime()
 
   function ENL.Saver:SpawnEnts(tbl)
-    local coolDownTimeLeft = math.Round((ENL.Saver.LastSpawn + NCfg:Get('Saver','Saver Cooldown'))-CurTime(),1)
+    local coolDownTimeLeft = math.Round((ENL.Saver.LastSpawn + NCfg:Get('Saver','Save Cooldown'))-CurTime(),1)
     if coolDownTimeLeft >= 0 then
       LocalPlayer():ChatPrint('Сохранятор не может работать так часто. Осталось '..coolDownTimeLeft..' сек.')
       return

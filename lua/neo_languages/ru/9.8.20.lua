@@ -7,4 +7,5 @@ NLang:AddTranslation('ru',{
     Saver = 'Сохранятор',
     ['Saves groups of items'] = 'Сохраняет связки предметов',
     ['Click on any of items to add / remove it from the bunch'] = 'Нажмите на любой предмет, чтобы добавить / удалить его из связки',
+    ['Create Indestructible Items'] = 'Создавать неразрушаемые предметы',
 })
