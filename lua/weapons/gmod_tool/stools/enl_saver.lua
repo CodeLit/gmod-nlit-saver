@@ -131,36 +131,6 @@ elseif CLIENT then
   language.Add('Tool.enl_saver.desc', l('Saves groups of items'))
   language.Add('Tool.enl_saver.0', l('Click on any of items to add / remove it from the bunch'))
 
-	local function DialogueWindow(question,...)
-
-		local fr = vgui.Create('DFrame')
-		fr:SetTitle('')
-
-		local label = Label(question,fr)
-		label:SetFont('Trebuchet24')
-		label:Dock(TOP)
-		label:SetContentAlignment(5)
-    label:SizeToContents()
-
-    fr:SetSize((label:GetWide()+30)*1.2,65)
-    fr:Center()
-    fr:MakePopup()
-
-		local function AddButton(text,f)
-      local btn = fr:Add('DButton')
-      btn:Dock(TOP)
-			btn:SetTall(30)
-      btn:SetText(text)
-      btn.DoClick = function(btn)
-        if f then f(btn) end
-        fr:Close()
-      end
-			btn:DockMargin(20,10,20,0)
-			fr:SetTall(fr:GetTall()+40)
-    end
-		for _,data in pairs({...}) do AddButton(data.text,data.func) end
-	end
-
 	function ENL.Saver:SaveEnts(filename)
     if !file.IsDir(path,'DATA') then file.CreateDir(path) end
     local function Write()
@@ -196,9 +166,11 @@ elseif CLIENT then
       table.remove(tbl,rmID)
       file.Write(path..'/'..filename..'.txt',util.TableToJSON(tbl))
     end
-		if file.Exists(path..'/'..filename..'.txt','DATA') then
-      DialogueWindow('Перезаписать уже имеющийся файл '..filename..'?',{text='Да',func=Write},{text='Нет'})
-		else Write() end
+    if file.Exists(path..'/'..filename..'.txt','DATA') then
+      NGUI:AcceptDialogue('Перезаписать уже имеющийся файл '..filename..'?', 'Да', 'Нет', Write)
+    else
+      Write()
+    end
 	end
 
   ENL.Saver.LastSpawn = ENL.Saver.LastSpawn or CurTime()
@@ -330,11 +302,10 @@ elseif CLIENT then
       if file.Exists(path..'/'..filename..'.txt','DATA') then
         local newName = edit:GetText()
         if newName == '' or newName == filename then return end
-        DialogueWindow('Переименовать сохранение '..filename..' в '..newName..'?',
-        {text='Да',func=function()
-          file.Rename(path..'/'..filename..'.txt',path..'/'..newName..'.txt')
-          list:Upd() edit:Upd()
-        end},{text='Нет'})
+          NGUI:AcceptDialogue('Переименовать сохранение '..filename..' в '..newName..'?', 'Да', 'Нет', function()
+            file.Rename(path..'/'..filename..'.txt',path..'/'..newName..'.txt')
+            list:Upd() edit:Upd()
+          end)
       end
     end)
 
@@ -343,10 +314,10 @@ elseif CLIENT then
       if !sel then return end
       local filename = sel:GetColumnText(1)
       if file.Exists(path..'/'..filename..'.txt','DATA') then
-        DialogueWindow('Удалить сохранение '..filename..'?',{text='Да',func=function()
+        NGUI:AcceptDialogue('Удалить сохранение '..filename..'?', 'Да', 'Нет', function()
           file.Delete(path..'/'..filename..'.txt')
           list:Upd()
-        end},{text='Нет'})
+        end)
       end
     end)
 
