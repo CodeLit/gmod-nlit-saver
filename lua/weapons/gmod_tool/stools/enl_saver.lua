@@ -35,6 +35,7 @@ if SERVER then
 	  local ent,ply = tr.Entity,self:GetOwner()
 	  if !table.HasValue(NCfg:Get('Saver','Classes To Save'), ent:GetClass()) then return false end
     net.Start(netstr)
+    net.WriteBool(false)
     net.WriteEntity(ent)
     net.Send(ply)
 	  return true
@@ -43,6 +44,13 @@ if SERVER then
 	function TOOL:RightClick(tr)
 	  return self:LeftClick(tr)
 	end
+
+  function TOOL:Reload(tr)
+    local ply = self:GetOwner()
+    net.Start(netstr)
+    net.WriteBool(true)
+    net.Send(ply)
+  end
 
   local firstEnts = {}
 
@@ -322,10 +330,17 @@ elseif CLIENT then
   end
 
   net.Receive(netstr, function()
+    local doempty = net.ReadBool()
     local ent = net.ReadEntity()
-    if IsValid(ent) then
-      if ENL.Saver.Ents[ent] then ENL.Saver.Ents[ent] = nil
-      else ENL.Saver.Ents[ent] = true end
+    if !doempty then
+      if IsValid(ent) then
+        if ENL.Saver.Ents[ent] then ENL.Saver.Ents[ent] = nil
+        else ENL.Saver.Ents[ent] = true end
+      end
+    else
+      for ent, _ in pairs(ENL.Saver.Ents) do
+        ENL.Saver.Ents[ent] = nil
+      end
     end
   end)
 

@@ -6,6 +6,6 @@ NLang:AddTranslation('ru',{
     ['Delay Between Single Propspawn'] = 'Перерыв между спавном предметов',
     Saver = 'Сохранятор',
     ['Saves groups of items'] = 'Сохраняет связки предметов',
-    ['Click on any of items to add / remove it from the bunch'] = 'Нажмите на любой предмет, чтобы добавить / удалить его из связки',
+    ['Click on any of items to add / remove it from the bunch. Press "Reload" to remove all from the bunch'] = 'Нажмите на любой предмет, чтобы добавить / удалить его из связки. Нажмите "Перезарядка", чтобы удалить всё из связки',
     ['Create Indestructible Items'] = 'Создавать неразрушаемые предметы',
 })
