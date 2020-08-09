@@ -45,13 +45,6 @@ if SERVER then
 	  return self:LeftClick(tr)
 	end
 
-  function TOOL:Reload(tr)
-    local ply = self:GetOwner()
-    net.Start(netstr)
-    net.WriteBool(true)
-    net.Send(ply)
-  end
-
   local firstEnts = {}
 
   net.Receive(netstr,function(_,ply)
@@ -327,7 +320,6 @@ elseif CLIENT then
 
     AddButton(NGUI:Button('Обновить сохранения', function() list:Upd() end))
 
-    -- TODO: Сделать функционал сброса
     AddButton(NGUI:Button('Сбросить выделение', function()
       ENL.Saver.Ents = {}
     end))
@@ -347,6 +339,10 @@ elseif CLIENT then
       end
     end
   end)
+
+  function TOOL:Reload(tr)
+    ENL.Saver.Ents = {}
+  end
 
   hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
     if table.Count(ENL.Saver.Ents) > 0 then
