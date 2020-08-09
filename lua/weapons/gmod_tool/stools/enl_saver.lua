@@ -1,12 +1,12 @@
 TOOL.Category = "Construction"
-TOOL.Name = "#tool.nl_duplicator.name"
+TOOL.Name = "#tool.enl_saver.name"
 
-local netstr = 'NL Duplicator'
+local netstr = 'ENL Saver'
 
-NL = NL or {}
-NL.Duplicator = NL.Duplicator or {}
+ENL = ENL or {}
+ENL.Saver = ENL.Saver or {}
 
-function NL.Duplicator:CanProceedEnt(ply,ent)
+function ENL.Saver:CanProceedEnt(ply,ent)
   if !IsValid(ply) or !IsValid(ent) then return end
   local function Note(text) ply:PrintMessage(HUD_PRINTCENTER,text) end
   if ent:GetClass() != 'prop_physics' then Note('Предмет должен быть пропом') return end
@@ -67,8 +67,10 @@ if SERVER then
       end
     end
     prop:SetModel(data.mdl)
-    if !NL.Duplicator:CanProceedEnt(ply,prop) then prop:Remove() return end
-    prop:CPPISetOwner(ply)
+    if !ENL.Saver:CanProceedEnt(ply,prop) then prop:Remove() return end
+    if prop.CPPISetOwner then
+      prop:CPPISetOwner(ply)
+    end
     prop.SID = ply.SID
     prop:Spawn()
 
@@ -115,14 +117,14 @@ elseif CLIENT then
     return addTime
   end
 
-  NL.Duplicator.Ents = NL.Duplicator.Ents or {}
+  ENL.Saver.Ents = ENL.Saver.Ents or {}
 
-  local path = 'nl_duplicator/saves'
-  local convar = CreateClientConVar('nl_duplicator_worldposspawns','0')
+  local path = 'enl_saver/saves'
+  local convar = CreateClientConVar('enl_saver_worldposspawns','0')
 
-  language.Add("Tool.nl_duplicator.name", "Сохранятор")
-  language.Add("Tool.nl_duplicator.desc", "Сохраняет связки предметов")
-  language.Add("Tool.nl_duplicator.0", "Нажмите на любой предмет, чтобы добавить / удалить его из связки")
+  language.Add("Tool.enl_saver.name", "Сохранятор")
+  language.Add("Tool.enl_saver.desc", "Сохраняет связки предметов")
+  language.Add("Tool.enl_saver.0", "Нажмите на любой предмет, чтобы добавить / удалить его из связки")
 
 	local function DialogueWindow(question,...)
 
@@ -154,12 +156,12 @@ elseif CLIENT then
 		for _,data in pairs({...}) do AddButton(data.text,data.func) end
 	end
 
-	function NL.Duplicator:SaveEnts(filename)
+	function ENL.Saver:SaveEnts(filename)
     if !file.IsDir(path,'DATA') then file.CreateDir(path) end
     local function Write()
-      if table.Count(NL.Duplicator.Ents) <= 0 then return end
+      if table.Count(ENL.Saver.Ents) <= 0 then return end
       local tbl = {[1]=false}
-      for ent,_ in pairs(NL.Duplicator.Ents) do
+      for ent,_ in pairs(ENL.Saver.Ents) do
         local instbl = {mdl = ent:GetModel()}
         instbl.ent = ent
         instbl.wpos = ent:GetPos()
@@ -194,25 +196,25 @@ elseif CLIENT then
 		else Write() end
 	end
 
-  NL.Duplicator.LastSpawn = NL.Duplicator.LastSpawn or CurTime()
+  ENL.Saver.LastSpawn = ENL.Saver.LastSpawn or CurTime()
 
-  function NL.Duplicator:SpawnEnts(tbl)
-    local coolDownTimeLeft = math.Round((NL.Duplicator.LastSpawn + NCfg:Get('Saver','Saver Cooldown'))-CurTime(),1)
+  function ENL.Saver:SpawnEnts(tbl)
+    local coolDownTimeLeft = math.Round((ENL.Saver.LastSpawn + NCfg:Get('Saver','Saver Cooldown'))-CurTime(),1)
     if coolDownTimeLeft >= 0 then
       LocalPlayer():ChatPrint('Сохранятор не может работать так часто. Осталось '..coolDownTimeLeft..' сек.')
       return
     end
-    if NL.Duplicator.InProgress then return end
-    NL.Duplicator.InProgress = true
+    if ENL.Saver.InProgress then return end
+    ENL.Saver.InProgress = true
     timer.Create('NL Duplicator Progress Timer',(GetSpawnDelay()*table.Count(tbl)),1,function()
-      NL.Duplicator.LastSpawn = CurTime()
-      NL.Duplicator.InProgress = nil
-      NL.Duplicator.Abort = nil
+      ENL.Saver.LastSpawn = CurTime()
+      ENL.Saver.InProgress = nil
+      ENL.Saver.Abort = nil
     end)
     local useWPos = convar:GetBool()
     for i,data in pairs(tbl) do
       timer.Simple(GetSpawnDelay()*(i-1),function()
-        if NL.Duplicator.Abort then return end
+        if ENL.Saver.Abort then return end
         net.Start(netstr)
         if useWpos then data.lpos = nil
         else data.wpos = nil end
@@ -225,7 +227,7 @@ elseif CLIENT then
   end
 
   hook.Add('HUDPaint','NL Dulpicator Progress',function()
-    if !NL.Duplicator.InProgress or NL.Duplicator.Abort then return end
+    if !ENL.Saver.InProgress or ENL.Saver.Abort then return end
     local text = 'Сохранятор создает объект... '..math.Round(timer.TimeLeft('NL Duplicator Progress Timer'),1)
     local txtdata = {text=text,font='DermaLarge',pos={ScrW()-400,ScrH()/15},color=Color(255,255,255)}
     draw.Text(txtdata)
@@ -234,8 +236,8 @@ elseif CLIENT then
     txtdata.pos = {ScrW()-510,ScrH()/10}
     draw.Text(txtdata)
     draw.TextShadow(txtdata,2,200)
-    if NL.Duplicator.InProgress and LocalPlayer():KeyPressed(IN_RELOAD) then
-      NL.Duplicator.Abort = true
+    if ENL.Saver.InProgress and LocalPlayer():KeyPressed(IN_RELOAD) then
+      ENL.Saver.Abort = true
     end
   end)
 
@@ -254,7 +256,7 @@ elseif CLIENT then
       btn.DoClick = func
     end
 
-    self:AddControl("Header", {Text = "#Tool.nl_duplicator.name", Description = "#Tool.nl_duplicator.desc"})
+    self:AddControl("Header", {Text = "#Tool.enl_saver.name", Description = "#Tool.enl_saver.desc"})
 
 		local pnl = self:Add("DPanel")
 		pnl:SetTall(30)
@@ -278,7 +280,7 @@ elseif CLIENT then
     end
     edit:Upd()
     AddButton('Сохранить предметы', function()
-      NL.Duplicator:SaveEnts(edit:GetText())
+      ENL.Saver:SaveEnts(edit:GetText())
 			self.SavesList:Upd()
       edit:Upd()
     end)
@@ -312,7 +314,7 @@ elseif CLIENT then
       if file.Exists(path..'/'..filename..'.txt','DATA') then
         local tbl = util.JSONToTable(file.Read(path..'/'..filename..'.txt'))
         if !istable(tbl) then return end
-        NL.Duplicator:SpawnEnts(tbl)
+        ENL.Saver:SpawnEnts(tbl)
       end
     end)
 
@@ -348,20 +350,20 @@ elseif CLIENT then
   net.Receive(netstr, function()
     local ent = net.ReadEntity()
     if IsValid(ent) then
-      if NL.Duplicator.Ents[ent] then NL.Duplicator.Ents[ent] = nil
-      else NL.Duplicator.Ents[ent] = true end
+      if ENL.Saver.Ents[ent] then ENL.Saver.Ents[ent] = nil
+      else ENL.Saver.Ents[ent] = true end
     end
   end)
 
-  hook.Add('PreDrawHalos', 'NL Duplicator Draw', function()
-    if table.Count(NL.Duplicator.Ents) > 0 then
+  hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
+    if table.Count(ENL.Saver.Ents) > 0 then
 	    local wep, tool = LocalPlayer():GetActiveWeapon(), LocalPlayer():GetTool()
 	    if !IsValid(wep) or wep:GetClass() != 'gmod_tool'
-	    or tool.Mode != 'nl_duplicator' then return end
+	    or tool.Mode != 'enl_saver' then return end
 	    local haloEnts = {}
-	    for ent, bool in pairs(NL.Duplicator.Ents) do
+	    for ent, bool in pairs(ENL.Saver.Ents) do
 	      if bool and IsValid(ent) then table.insert(haloEnts, ent)
-	      else NL.Duplicator.Ents[ent] = nil end
+	      else ENL.Saver.Ents[ent] = nil end
 	    end
 	    halo.Add(haloEnts, Color(0, 255, 0), 10, 10, 1)
 		end
