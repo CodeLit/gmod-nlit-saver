@@ -77,7 +77,9 @@ if SERVER then
     end
     prop.SID = ply.SID
     prop:Spawn()
-
+    if NCfg:Get('Saver','Freeze Items On Spawn') then
+      prop:GetPhysicsObject():EnableMotion(true)
+    end
     if NCfg:Get('Saver','Create Indestructible Items') then
       prop:SetVar('Unbreakable',true)
       prop:Fire('SetDamageFilter','FilterDamage',0)

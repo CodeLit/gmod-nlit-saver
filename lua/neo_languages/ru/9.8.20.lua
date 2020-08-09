@@ -8,4 +8,5 @@ NLang:AddTranslation('ru',{
     ['Saves groups of items'] = 'Сохраняет связки предметов',
     ['Click on any of items to add / remove it from the bunch. Press [R] to unselect all'] = 'Нажмите на любой предмет, чтобы добавить / удалить его из связки. Нажмите [R], чтобы снять выделение',
     ['Create Indestructible Items'] = 'Создавать неразрушаемые предметы',
+    ['Freeze Items On Spawn'] = 'Замораживать предметы при спавне',
 })
