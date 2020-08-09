@@ -280,8 +280,6 @@ elseif CLIENT then
 		list:Upd()
 		self.SavesList = list
 
-		AddButton(NGUI:Button('Обновить сохранения', function() list:Upd() end))
-
     AddButton(NGUI:Button('Разместить сохранение', function()
       local sel = list:GetSelected()[1]
       if !sel then return end
@@ -318,6 +316,8 @@ elseif CLIENT then
         end)
       end
     end))
+
+    AddButton(NGUI:Button('Обновить сохранения', function() list:Upd() end))
 
   end
 
