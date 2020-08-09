@@ -51,7 +51,7 @@ if SERVER then
     if !(isvector(data.wpos) or isvector(data.lpos))
     or !isangle(data.wang) or !isstring(data.mdl) then return end
     if !hook.Run('PlayerSpawnProp',ply,data.mdl) then return end
-    local prop = ents.Create('prop_physics')
+    local prop = ents.Create(data.class)
     if data.useWPos then
       prop:SetPos(data.wpos)
       prop:SetAngles(data.wang)
@@ -139,6 +139,7 @@ elseif CLIENT then
       for ent,_ in pairs(ENL.Saver.Ents) do
         local instbl = {mdl = ent:GetModel()}
         instbl.ent = ent
+        instbl.class = ent:GetClass()
         instbl.wpos = ent:GetPos()
         instbl.wang = ent:GetAngles()
         instbl.mat = ent:GetMaterial()

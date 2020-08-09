@@ -1,5 +1,5 @@
 NCfg:AddAddon('Saver')
-NCfg:Set('Saver','Max. Items Spawn Distance', 1000,'num')
+NCfg:Set('Saver','Max. Items Spawn Distance', 500,'num')
 NCfg:Set('Saver','Delay Between Single Propspawn',0.5,'num')
 NCfg:Set('Saver','Save Cooldown',5,'num')
 NCfg:Set('Saver','Classes To Save',{'prop_physics'},'table')
