@@ -2,6 +2,7 @@ TOOL.Category = 'Construction'
 TOOL.Name = '#tool.enl_saver.name'
 
 local netstr = 'ENL Saver'
+local freezeCvarName = 'enl_saver_freeze'
 
 ENL = ENL or {}
 ENL.Saver = ENL.Saver or {}
@@ -77,7 +78,7 @@ if SERVER then
     end
     prop.SID = ply.SID
     prop:Spawn()
-    if NCfg:Get('Saver','Freeze Items On Spawn') then
+    if ply:GetInfo(freezeCvarName) then
       prop:GetPhysicsObject():EnableMotion(true)
     end
     if NCfg:Get('Saver','Create Indestructible Items') then
@@ -128,7 +129,8 @@ elseif CLIENT then
   ENL.Saver.Ents = ENL.Saver.Ents or {}
 
   local path = 'enl_saver/saves'
-  local convar = CreateClientConVar('enl_saver_worldposspawns','0')
+  local wPosCvar = CreateClientConVar('enl_saver_worldposspawns','0')
+  local freezeCvar = CreateClientConVar(freezeCvarName,'0')
 
   language.Add('Tool.enl_saver.name', l('Saver'))
   language.Add('Tool.enl_saver.desc', l('Saves groups of items'))
@@ -171,7 +173,7 @@ elseif CLIENT then
       file.Write(path..'/'..filename..'.txt',util.TableToJSON(tbl))
     end
     if file.Exists(path..'/'..filename..'.txt','DATA') then
-      NGUI:AcceptDialogue('Перезаписать уже имеющийся файл '..filename..'?', 'Да', 'Нет', Write)
+      NGUI:AcceptDialogue('Перезаписать уже имеющийся файл '..filename..'?', 'Yes', 'No', Write)
     else
       Write()
     end
@@ -192,7 +194,7 @@ elseif CLIENT then
       ENL.Saver.InProgress = nil
       ENL.Saver.Abort = nil
     end)
-    local useWPos = convar:GetBool()
+    local useWPos = wPosCvar:GetBool()
     for i,data in pairs(tbl) do
       timer.Simple(GetSpawnDelay()*(i-1),function()
         if ENL.Saver.Abort then return end
@@ -259,20 +261,22 @@ elseif CLIENT then
 
     edit:Upd()
 
-    AddButton(NGUI:AcceptButton('Сохранить предметы', function()
+    AddButton(NGUI:AcceptButton('Save items', function()
       ENL.Saver:SaveEnts(edit:GetText())
 			self.SavesList:Upd()
       edit:Upd()
     end))
 
-    self:AddControl('CheckBox', {Label = 'Размещать, сохраняя позиции на карте', Command = convar:GetName()})
+    self:AddControl('CheckBox', {Label = l('Place with saving world positions'), Command = wPosCvar:GetName()})
+
+    self:AddControl('CheckBox', {Label = l('Freeze Items On Spawn'), Command = freezeCvar:GetName()})
 
     local list = vgui.Create('DListView', self)
     list:SetTall(ScrH() / 3)
     list:Dock(TOP)
     list:DockMargin(0, 10, 0, 0)
     list:SetMultiSelect(false)
-    list:AddColumn('Сохранения')
+    list:AddColumn(l('Savings'))
 
 		function list:Upd()
 			list:Clear()
@@ -285,7 +289,7 @@ elseif CLIENT then
 		list:Upd()
 		self.SavesList = list
 
-    AddButton(NGUI:Button('Разместить сохранение', function()
+    AddButton(NGUI:Button('Place saving', function()
       local sel = list:GetSelected()[1]
       if !sel then return end
       local filename = sel:GetColumnText(1)
@@ -296,35 +300,36 @@ elseif CLIENT then
       end
     end))
 
-    AddButton(NGUI:Button('Переименовать сохранение', function()
+    AddButton(NGUI:Button('Rename saving', function()
       local sel = list:GetSelected()[1]
       if !sel then return end
       local filename = sel:GetColumnText(1)
       if file.Exists(path..'/'..filename..'.txt','DATA') then
         local newName = edit:GetText()
         if newName == '' or newName == filename then return end
-          NGUI:AcceptDialogue('Переименовать сохранение '..filename..' в '..newName..'?', 'Да', 'Нет', function()
+          NGUI:AcceptDialogue(l('Rename saving')..' '..filename
+            ..' '..l('to')..' '..newName..'?', 'Yes', 'No', function()
             file.Rename(path..'/'..filename..'.txt',path..'/'..newName..'.txt')
             list:Upd() edit:Upd()
           end)
       end
     end))
 
-    AddButton(NGUI:DeclineButton('Удалить сохранение', function()
+    AddButton(NGUI:DeclineButton('Remove saving', function()
       local sel = list:GetSelected()[1]
       if !sel then return end
       local filename = sel:GetColumnText(1)
       if file.Exists(path..'/'..filename..'.txt','DATA') then
-        NGUI:AcceptDialogue('Удалить сохранение '..filename..'?', 'Да', 'Нет', function()
+        NGUI:AcceptDialogue(l('Remove saving')..' '..filename..'?', 'Yes', 'No', function()
           file.Delete(path..'/'..filename..'.txt')
           list:Upd()
         end)
       end
     end))
 
-    AddButton(NGUI:Button('Обновить сохранения', function() list:Upd() end))
+    AddButton(NGUI:Button('Update savings', function() list:Upd() end))
 
-    AddButton(NGUI:Button('Сбросить выделение', function()
+    AddButton(NGUI:Button('Clear selection', function()
       ENL.Saver.Ents = {}
     end))
   end
