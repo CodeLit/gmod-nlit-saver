@@ -1,8 +1,6 @@
 TOOL.Category = "Construction"
 TOOL.Name = "#tool.nl_duplicator.name"
 
-local maxRange,coolDown,delayBetweenSpawns = 500,5,0.5
-
 local netstr = 'NL Duplicator'
 
 NL = NL or {}
@@ -12,7 +10,8 @@ function NL.Duplicator:CanProceedEnt(ply,ent)
   if !IsValid(ply) or !IsValid(ent) then return end
   local function Note(text) ply:PrintMessage(HUD_PRINTCENTER,text) end
   if ent:GetClass() != 'prop_physics' then Note('Предмет должен быть пропом') return end
-  if ply:GetPos():Distance(ent:GetPos()) > maxRange then Note('Слишком большое расстояние до предмета') return false end
+  if ply:GetPos():Distance(ent:GetPos()) > NCfg:Get('Saver','Maximum Items Spawn Distance') then
+    Note('Слишком большое расстояние до предмета') return false end
   local tr = util.TraceLine({start=ply:EyePos(),endpos=ent:WorldSpaceCenter(),
     filter = function(e) if e.SID != ply.SID then return true end end
   })
@@ -109,7 +108,7 @@ if SERVER then
 elseif CLIENT then
 
   local function GetSpawnDelay()
-    local addTime = delayBetweenSpawns or 0.5
+    local addTime = NCfg:Get('Saver','Delay Between Single Propspawn')
     if NL and NL.CustomNet and NL.CustomNet.GetDelayBetweenSameNetStrings then
       addTime = addTime + NL.CustomNet.GetDelayBetweenSameNetStrings()
     end
@@ -198,7 +197,7 @@ elseif CLIENT then
   NL.Duplicator.LastSpawn = NL.Duplicator.LastSpawn or CurTime()
 
   function NL.Duplicator:SpawnEnts(tbl)
-    local coolDownTimeLeft = math.Round((NL.Duplicator.LastSpawn + coolDown)-CurTime(),1)
+    local coolDownTimeLeft = math.Round((NL.Duplicator.LastSpawn + NCfg:Get('Saver','Saver Cooldown'))-CurTime(),1)
     if coolDownTimeLeft >= 0 then
       LocalPlayer():ChatPrint('Сохранятор не может работать так часто. Осталось '..coolDownTimeLeft..' сек.')
       return

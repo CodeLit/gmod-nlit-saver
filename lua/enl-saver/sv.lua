@@ -1,0 +1,8 @@
+NCfg:AddAddon('Saver')
+NCfg:Set('Saver','Maximum Items Spawn Distance',500,'num')
+NCfg:Set('Saver','Delay Between Single Propspawn',0.5,'num')
+NCfg:Set('Saver','Saver Cooldown',5,'num')
+-- NCfg:Set('Saver','Maximum Items Spawn Distance',true,'bool')
+-- NCfg:Set('Saver','Число 1','100','num')
+-- NCfg:Set('Saver','Текстовое поле 1','300','text')
+-- NCfg:Set('Saver','Таблица 2',{'Знач1','Знач2'},'table')
