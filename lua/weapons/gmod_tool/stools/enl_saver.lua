@@ -9,7 +9,10 @@ ENL.Saver = ENL.Saver or {}
 function ENL.Saver:CanProceedEnt(ply,ent)
   if !IsValid(ply) or !IsValid(ent) then return end
   local function Note(text) ply:PrintMessage(HUD_PRINTCENTER,text) end
-  if ent:GetClass() != 'prop_physics' then Note('Предмет должен быть пропом') return end
+  if !table.HasValue(NCfg:Get('Saver','Classes To Save'), ent:GetClass()) then
+    Note('Предмет должен быть пропом')
+    return
+  end
   if ply:GetPos():Distance(ent:GetPos()) > NCfg:Get('Saver','Max. Items Spawn Distance') then
     Note('Слишком большое расстояние до предмета') return false end
   local tr = util.TraceLine({start=ply:EyePos(),endpos=ent:WorldSpaceCenter(),
