@@ -18,7 +18,7 @@ function ENL.Saver:CanProceedEnt(ply,ent)
   local tr = util.TraceLine({start=ply:EyePos(),endpos=ent:WorldSpaceCenter(),
     filter = function(e) if e.SID != ply.SID then return true end end
   })
-  // if tr.Hit then Note('Предмет вне поля видимости') return false end
+  -- if tr.Hit then Note('Предмет вне поля видимости') return false end
   for _,ent in pairs(ents.FindInSphere(ent:GetPos(),ent:BoundingRadius() or 50)) do
     if ent:IsPlayer() then Note('Игрок блокирует спавн предмета') return false end
   end
