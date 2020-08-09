@@ -219,17 +219,15 @@ elseif CLIENT then
 
   function TOOL:BuildCPanel()
 
-    local function AddButton(text, func)
+    local function AddButton(btn)
       local pnl = self:Add('DPanel')
       pnl:SetTall(30)
       pnl:Dock(TOP)
-			pnl:DockMargin(20,10,20,0)
-
-      local btn = pnl:Add('DButton')
+      pnl:SetText('')
+      pnl:DockMargin(20,10,20,0)
+      
+      btn:SetParent(pnl)
       btn:Dock(FILL)
-      btn:SetText(text)
-      btn:SetFont('Trebuchet18')
-      btn.DoClick = func
     end
 
     self:AddControl('Header', {Text = '#Tool.enl_saver.name', Description = '#Tool.enl_saver.desc'})
@@ -255,11 +253,11 @@ elseif CLIENT then
       end
     end
     edit:Upd()
-    AddButton('Сохранить предметы', function()
+    AddButton(NGUI:AcceptButton('Сохранить предметы', function()
       ENL.Saver:SaveEnts(edit:GetText())
 			self.SavesList:Upd()
       edit:Upd()
-    end)
+    end))
 
     self:AddControl('CheckBox', {Label = 'Размещать, сохраняя позиции на карте', Command = convar:GetName()})
 
@@ -281,9 +279,7 @@ elseif CLIENT then
 		list:Upd()
 		self.SavesList = list
 
-		AddButton('Обновить сохранения', function() list:Upd() end)
-
-    AddButton('Разместить сохранение', function()
+    AddButton(NGUI:Button('Разместить сохранение', function()
       local sel = list:GetSelected()[1]
       if !sel then return end
       local filename = sel:GetColumnText(1)
@@ -292,9 +288,9 @@ elseif CLIENT then
         if !istable(tbl) then return end
         ENL.Saver:SpawnEnts(tbl)
       end
-    end)
+    end))
 
-    AddButton('Переименовать сохранение', function()
+    AddButton(NGUI:Button('Переименовать сохранение', function()
       local sel = list:GetSelected()[1]
       if !sel then return end
       local filename = sel:GetColumnText(1)
@@ -306,9 +302,9 @@ elseif CLIENT then
             list:Upd() edit:Upd()
           end)
       end
-    end)
+    end))
 
-    AddButton('Удалить сохранение', function()
+    AddButton(NGUI:DeclineButton('Удалить сохранение', function()
       local sel = list:GetSelected()[1]
       if !sel then return end
       local filename = sel:GetColumnText(1)
@@ -318,7 +314,9 @@ elseif CLIENT then
           list:Upd()
         end)
       end
-    end)
+    end))
+
+    AddButton(NGUI:Button('Обновить сохранения', function() list:Upd() end))
 
   end
 
