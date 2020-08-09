@@ -1,5 +1,5 @@
-TOOL.Category = "Construction"
-TOOL.Name = "#tool.enl_saver.name"
+TOOL.Category = 'Construction'
+TOOL.Name = '#tool.enl_saver.name'
 
 local netstr = 'ENL Saver'
 
@@ -30,7 +30,7 @@ if SERVER then
 
 	function TOOL:LeftClick(tr)
 	  local ent,ply = tr.Entity,self:GetOwner()
-	  if ent:GetClass() != 'prop_physics' then return false end
+	  if !table.HasValue(NCfg:Get('Saver','Classes To Save'), ent:GetClass()) then return false end
     net.Start(netstr)
     net.WriteEntity(ent)
     net.Send(ply)
@@ -47,7 +47,7 @@ if SERVER then
     local data = net.ReadTable()
     if !(isvector(data.wpos) or isvector(data.lpos))
     or !isangle(data.wang) or !isstring(data.mdl) then return end
-    if !hook.Run("PlayerSpawnProp",ply,data.mdl) then return end
+    if !hook.Run('PlayerSpawnProp',ply,data.mdl) then return end
     local prop = ents.Create('prop_physics')
     if data.useWPos then
       prop:SetPos(data.wpos)
@@ -74,13 +74,13 @@ if SERVER then
     prop.SID = ply.SID
     prop:Spawn()
 
-    prop:SetVar("Unbreakable",true)
-    prop:Fire("SetDamageFilter","FilterDamage",0)
+    prop:SetVar('Unbreakable',true)
+    prop:Fire('SetDamageFilter','FilterDamage',0)
 
-    gamemode.Call("PlayerSpawnedProp",ply,data.mdl,prop)
+    gamemode.Call('PlayerSpawnedProp',ply,data.mdl,prop)
 
-		cleanup.Add(ply,"props",prop)
-		undo.Create("prop")
+		cleanup.Add(ply,'props',prop)
+		undo.Create('prop')
 		undo.AddEntity(prop)
 		undo.SetPlayer(ply)
 		undo.Finish()
@@ -122,9 +122,9 @@ elseif CLIENT then
   local path = 'enl_saver/saves'
   local convar = CreateClientConVar('enl_saver_worldposspawns','0')
 
-  language.Add("Tool.enl_saver.name", "Сохранятор")
-  language.Add("Tool.enl_saver.desc", "Сохраняет связки предметов")
-  language.Add("Tool.enl_saver.0", "Нажмите на любой предмет, чтобы добавить / удалить его из связки")
+  language.Add('Tool.enl_saver.name', 'Сохранятор')
+  language.Add('Tool.enl_saver.desc', 'Сохраняет связки предметов')
+  language.Add('Tool.enl_saver.0', 'Нажмите на любой предмет, чтобы добавить / удалить его из связки')
 
 	local function DialogueWindow(question,...)
 
@@ -142,7 +142,7 @@ elseif CLIENT then
     fr:MakePopup()
 
 		local function AddButton(text,f)
-      local btn = fr:Add("DButton")
+      local btn = fr:Add('DButton')
       btn:Dock(TOP)
 			btn:SetTall(30)
       btn:SetText(text)
@@ -192,7 +192,7 @@ elseif CLIENT then
       file.Write(path..'/'..filename..'.txt',util.TableToJSON(tbl))
     end
 		if file.Exists(path..'/'..filename..'.txt','DATA') then
-      DialogueWindow('Перезаписать уже имеющийся файл '..filename..'?',{text="Да",func=Write},{text="Нет"})
+      DialogueWindow('Перезаписать уже имеющийся файл '..filename..'?',{text='Да',func=Write},{text='Нет'})
 		else Write() end
 	end
 
@@ -244,21 +244,21 @@ elseif CLIENT then
   function TOOL:BuildCPanel()
 
     local function AddButton(text, func)
-      local pnl = self:Add("DPanel")
+      local pnl = self:Add('DPanel')
       pnl:SetTall(30)
       pnl:Dock(TOP)
 			pnl:DockMargin(20,10,20,0)
 
-      local btn = pnl:Add("DButton")
+      local btn = pnl:Add('DButton')
       btn:Dock(FILL)
       btn:SetText(text)
       btn:SetFont('Trebuchet18')
       btn.DoClick = func
     end
 
-    self:AddControl("Header", {Text = "#Tool.enl_saver.name", Description = "#Tool.enl_saver.desc"})
+    self:AddControl('Header', {Text = '#Tool.enl_saver.name', Description = '#Tool.enl_saver.desc'})
 
-		local pnl = self:Add("DPanel")
+		local pnl = self:Add('DPanel')
 		pnl:SetTall(30)
 		pnl:Dock(TOP)
 		pnl:DockMargin(20,10,20,0)
@@ -285,14 +285,14 @@ elseif CLIENT then
       edit:Upd()
     end)
 
-    self:AddControl("CheckBox", {Label = "Размещать, сохраняя позиции на карте", Command = convar:GetName()})
+    self:AddControl('CheckBox', {Label = 'Размещать, сохраняя позиции на карте', Command = convar:GetName()})
 
-    local list = vgui.Create("DListView", self)
+    local list = vgui.Create('DListView', self)
     list:SetTall(ScrH() / 3)
     list:Dock(TOP)
     list:DockMargin(0, 10, 0, 0)
     list:SetMultiSelect(false)
-    list:AddColumn("Сохранения")
+    list:AddColumn('Сохранения')
 
 		function list:Upd()
 			list:Clear()
@@ -326,10 +326,10 @@ elseif CLIENT then
         local newName = edit:GetText()
         if newName == '' or newName == filename then return end
         DialogueWindow('Переименовать сохранение '..filename..' в '..newName..'?',
-        {text="Да",func=function()
+        {text='Да',func=function()
           file.Rename(path..'/'..filename..'.txt',path..'/'..newName..'.txt')
           list:Upd() edit:Upd()
-        end},{text="Нет"})
+        end},{text='Нет'})
       end
     end)
 
@@ -338,10 +338,10 @@ elseif CLIENT then
       if !sel then return end
       local filename = sel:GetColumnText(1)
       if file.Exists(path..'/'..filename..'.txt','DATA') then
-        DialogueWindow('Удалить сохранение '..filename..'?',{text="Да",func=function()
+        DialogueWindow('Удалить сохранение '..filename..'?',{text='Да',func=function()
           file.Delete(path..'/'..filename..'.txt')
           list:Upd()
-        end},{text="Нет"})
+        end},{text='Нет'})
       end
     end)
 
