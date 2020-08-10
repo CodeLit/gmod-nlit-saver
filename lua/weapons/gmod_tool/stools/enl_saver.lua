@@ -53,9 +53,6 @@ if SERVER then
     end
     prop.SID = ply.SID
     prop:Spawn()
-    if tobool(ply:GetInfo(ENL.Saver.freezeCvarName)) then
-      prop:GetPhysicsObject():EnableMotion(true)
-    end
     if NCfg:Get('Saver','Create Indestructible Items') then
       prop:SetVar('Unbreakable',true)
       prop:Fire('SetDamageFilter','FilterDamage',0)
@@ -75,8 +72,9 @@ if SERVER then
         local mins,maxs = phys:GetAABB()
         prop:SetPos(prop:GetPos()+Vector(0,0,maxs.z+10))
       end
-      phys:EnableMotion(false)
+      phys:EnableMotion(!tobool(ply:GetInfo(ENL.Saver.freezeCvarName)))
     end
+
     if APA and APA.InitGhost then
       timer.Simple(1,function()
         APA.InitGhost(prop,true,false,false,true) -- ent,ghostoff,nofreeze,collision,forcefreeze
