@@ -13,7 +13,7 @@ NLang:AddTranslation('ru',{
     ['Place with saving world positions'] = 'Размещать, сохраняя позиции на карте',
     ['Place saving'] = 'Разместить сохранение',
     ['Rename saving'] = 'Переименовать сохранение',
-    ['Remove saving'] = 'Переименовать сохранение',
+    ['Remove saving'] = 'Удалить сохранение',
     ['Update savings'] = 'Обновить сохранения',
     ['Clear selection'] = 'Сбросить выделение',
     ['Yes'] = 'Да',
