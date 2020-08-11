@@ -1,4 +1,4 @@
-hook.Add('HUDPaint','NL Dulpicator Progress',function()
+hook.Add('HUDPaint','ENL Dulpicator Progress',function()
   if !ENL.Saver.InProgress or ENL.Saver.Abort then return end
   local text = 'Сохранятор создает объект... '..math.Round(timer.TimeLeft('NL Duplicator Progress Timer'),1)
   local txtdata = {text=text,font='DermaLarge',pos={ScrW()-400,ScrH()/15},color=Color(255,255,255)}
@@ -14,7 +14,7 @@ hook.Add('HUDPaint','NL Dulpicator Progress',function()
 end)
 
 hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
-  if table.Count(ENL.Saver.Ents) > 0 then
+  if !table.IsEmpty(ENL.Saver.Ents) then
     local wep, tool = LocalPlayer():GetActiveWeapon(), LocalPlayer():GetTool()
     if !IsValid(wep) or wep:GetClass() != 'gmod_tool'
       or tool.Mode != 'enl_saver' then return end
@@ -24,6 +24,14 @@ hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
       if bool and IsValid(ent) then table.insert(haloEnts, ent)
       else ENL.Saver.Ents[ent] = nil end
     end
-    halo.Add(haloEnts, Color(0, 255, 0), 10, 10, 1)
+    halo.Add(haloEnts, Color( 51, 255, 51 ), 1, 1, 15, true, true)
+  end
+
+  if !table.IsEmpty(ENL.Saver.ClientProps) then
+    local haloEnts = {}
+    for _, ent in pairs(ENL.Saver.ClientProps) do
+      table.insert(haloEnts, ent)
+    end
+    halo.Add(haloEnts, NC:White(), 1, 1, 15, true, true)
   end
 end)
