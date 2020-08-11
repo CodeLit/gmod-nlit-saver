@@ -249,7 +249,6 @@ elseif CLIENT then
     end))
 
     self:AddControl('CheckBox', {Label = l('Place with saving world positions'), Command = wPosCvar:GetName()})
-
     self:AddControl('CheckBox', {Label = l('Freeze Items On Spawn'), Command = freezeCvar:GetName()})
 
     local list = vgui.Create('DListView', self)
