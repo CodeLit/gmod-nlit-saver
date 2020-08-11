@@ -189,7 +189,6 @@ elseif CLIENT then
             local client = ents.CreateClientProp(data.mdl)
             client:SetPos(data.wpos)
             client:SetAngles(data.wang)
-            --client:SetMaterial("models/wireframe")
             client:Spawn()
 
             table.insert(ENL.Saver.ClientProps, client)
@@ -197,7 +196,11 @@ elseif CLIENT then
       else
          if !table.IsEmpty(ENL.Saver.ClientProps) then
             for _, ent in pairs(ENL.Saver.ClientProps) do
-               ent:Remove()
+             if IsValid(ent) then
+               	ent:Remove()
+             else
+								ENL.Saver.ClientProps = {}
+             end
             end
             ENL.Saver.ClientProps = {}
          end
@@ -276,11 +279,7 @@ elseif CLIENT then
       if file.Exists(path..'/'..filename..'.txt','DATA') then
         local tbl = util.JSONToTable(file.Read(path..'/'..filename..'.txt'))
         if !istable(tbl) then return end
-         if table.IsEmpty(ENL.Saver.ClientProps) then
-            ENL.Saver:ClientProp(false, tbl)
-         else
-            ENL.Saver:ClientProp(true, tbl)
-         end
+         ENL.Saver:ClientProp(!table.IsEmpty(ENL.Saver.ClientProps), tbl)
       end
     end))
 
