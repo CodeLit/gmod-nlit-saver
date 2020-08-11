@@ -1,10 +1,11 @@
 hook.Add('HUDPaint','NL Dulpicator Progress',function()
   if !ENL.Saver.InProgress or ENL.Saver.Abort then return end
-  local text = 'Сохранятор создает объект... '..math.Round(timer.TimeLeft('NL Duplicator Progress Timer'),1)
+  local text = l('Saver is creating objects')..'...'
+    ..math.Round(timer.TimeLeft('NL Duplicator Progress Timer'),1)
   local txtdata = {text=text,font='DermaLarge',pos={ScrW()-400,ScrH()/15},color=Color(255,255,255)}
   draw.Text(txtdata)
   draw.TextShadow(txtdata,2,200)
-  txtdata.text = 'Нажмите R, чтобы отменить создание'
+  txtdata.text = l('Press R button to reject creation')..'.'
   txtdata.pos = {ScrW()-510,ScrH()/10}
   draw.Text(txtdata)
   draw.TextShadow(txtdata,2,200)

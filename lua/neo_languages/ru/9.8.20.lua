@@ -20,4 +20,9 @@ NLang:AddTranslation('ru',{
     ['Yes'] = 'Да',
     ['No'] = 'Нет',
     ['to'] = 'в',
+    ['Press R button to reject creation'] = 'Нажмите R, чтобы отменить создание',
+    ['Saver is creating objects'] = 'Сохранятор создает объекты',
+    ['The item must be a prop'] = 'Предмет должен быть пропом',
+    ['There is too far for the object'] = 'Слишком большое расстояние до предмета',
+    ['Player is blocking item spawn'] = 'Игрок блокирует спавн предмета',
 })
