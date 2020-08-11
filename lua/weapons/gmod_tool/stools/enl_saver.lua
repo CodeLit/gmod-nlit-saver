@@ -181,6 +181,29 @@ elseif CLIENT then
     end
   end
 
+   ENL.Saver.ClientProps = ENL.Saver.ClientProps or {}
+
+   function ENL.Saver:ClientProp(bDelete, tbl)
+      if !bDelete then
+         for i, data in pairs(tbl) do
+            local client = ents.CreateClientProp(data.mdl)
+            client:SetPos(data.wpos)
+            client:SetAngles(data.wang)
+            --client:SetMaterial("models/wireframe")
+            client:Spawn()
+
+            table.insert(ENL.Saver.ClientProps, client)
+         end
+      else
+         if !table.IsEmpty(ENL.Saver.ClientProps) then
+            for _, ent in pairs(ENL.Saver.ClientProps) do
+               ent:Remove()
+            end
+            ENL.Saver.ClientProps = {}
+         end
+      end 
+   end
+
   function TOOL:BuildCPanel()
 
     local function AddButton(btn)
@@ -246,6 +269,21 @@ elseif CLIENT then
 		end
 		list:Upd()
 		self.SavesList = list
+
+    AddButton(NGUI:Button('Show/Hide structure', function()
+      local sel = list:GetSelected()[1]
+      if !sel then return end
+      local filename = sel:GetColumnText(1)
+      if file.Exists(path..'/'..filename..'.txt','DATA') then
+        local tbl = util.JSONToTable(file.Read(path..'/'..filename..'.txt'))
+        if !istable(tbl) then return end
+         if table.IsEmpty(ENL.Saver.ClientProps) then
+            ENL.Saver:ClientProp(false, tbl)
+         else
+            ENL.Saver:ClientProp(true, tbl)
+         end
+      end
+    end))
 
     AddButton(NGUI:Button('Place saving', function()
       local sel = list:GetSelected()[1]
