@@ -25,4 +25,5 @@ NLang:AddTranslation('ru',{
     ['The item must be a prop'] = 'Предмет должен быть пропом',
     ['There is too far for the object'] = 'Слишком большое расстояние до предмета',
     ['Player is blocking item spawn'] = 'Игрок блокирует спавн предмета',
+   -- ['Item is blocking item spawn'] = 'Предмет блокирует спавн другого предмета',
 })

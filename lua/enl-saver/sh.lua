@@ -2,6 +2,7 @@ ENL = ENL or {}
 ENL.Saver = ENL.Saver or {}
 ENL.Saver.netstr = 'ENL Saver'
 ENL.Saver.freezeCvarName = 'enl_saver_freeze'
+--ENL.Saver.SpawnedProps = ENL.Saver.SpawnedProps or {}
 
 
 function ENL.Saver:CanProceedEnt(ply,ent)
@@ -20,5 +21,6 @@ function ENL.Saver:CanProceedEnt(ply,ent)
   for _,ent in pairs(ents.FindInSphere(ent:GetPos(),ent:BoundingRadius() or 50)) do
     if ent:IsPlayer() then ply:Notify(l('Player is blocking item spawn')..'!') return false end
   end
+  
   return true
 end

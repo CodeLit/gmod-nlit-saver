@@ -190,6 +190,7 @@ elseif CLIENT then
             local client = ents.CreateClientProp(data.mdl)
             client:SetPos(data.wpos)
             client:SetAngles(data.wang)
+            client:GetPhysicsObject():EnableMotion(false)
             client:Spawn()
 
             table.insert(ENL.Saver.ClientProps, client)
