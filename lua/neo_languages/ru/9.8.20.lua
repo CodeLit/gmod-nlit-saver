@@ -11,7 +11,7 @@ NLang:AddTranslation('ru',{
     ['Create Indestructible Items'] = 'Создавать неразрушаемые предметы',
     ['Freeze Items On Spawn'] = 'Замораживать предметы при спавне',
     ['Place with saving world positions'] = 'Размещать, сохраняя позиции на карте',
-    ['Show/Hide Structure'] = "Показать/Скрыть структуру",
+    ['Show/Hide structure'] = 'Показать/Скрыть структуру',
     ['Place saving'] = 'Разместить сохранение',
     ['Rename saving'] = 'Переименовать сохранение',
     ['Remove saving'] = 'Удалить сохранение',
@@ -25,4 +25,5 @@ NLang:AddTranslation('ru',{
     ['The item must be a prop'] = 'Предмет должен быть пропом',
     ['There is too far for the object'] = 'Слишком большое расстояние до предмета',
     ['Player is blocking item spawn'] = 'Игрок блокирует спавн предмета',
+   -- ['Item is blocking item spawn'] = 'Предмет блокирует спавн другого предмета',
 })
