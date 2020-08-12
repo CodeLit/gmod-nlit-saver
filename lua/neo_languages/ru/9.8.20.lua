@@ -11,7 +11,7 @@ NLang:AddTranslation('ru',{
     ['Create Indestructible Items'] = 'Создавать неразрушаемые предметы',
     ['Freeze Items On Spawn'] = 'Замораживать предметы при спавне',
     ['Place with saving world positions'] = 'Размещать, сохраняя позиции на карте',
-    ['Show/Hide Structure'] = "Показать/Скрыть структуру",
+    ['Show/Hide structure'] = 'Показать/Скрыть структуру',
     ['Place saving'] = 'Разместить сохранение',
     ['Rename saving'] = 'Переименовать сохранение',
     ['Remove saving'] = 'Удалить сохранение',

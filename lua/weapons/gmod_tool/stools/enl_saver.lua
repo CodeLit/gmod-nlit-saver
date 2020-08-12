@@ -101,6 +101,8 @@ elseif CLIENT then
 
   ENL.Saver.Ents = ENL.Saver.Ents or {}
 
+  ENL.Saver.ClientProps = ENL.Saver.ClientProps or {}
+
   local path = 'enl_saver/saves'
   local wPosCvar = CreateClientConVar('enl_saver_worldposspawns','0')
   local freezeCvar = CreateClientConVar(ENL.Saver.freezeCvarName,'0',true,true)
@@ -179,9 +181,8 @@ elseif CLIENT then
         net.SendToServer()
       end)
     end
+    ENL.Saver:ClientProp(true)
   end
-
-   ENL.Saver.ClientProps = ENL.Saver.ClientProps or {}
 
    function ENL.Saver:ClientProp(bDelete, tbl)
       if !bDelete then
