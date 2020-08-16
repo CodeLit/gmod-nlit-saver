@@ -30,4 +30,5 @@ NLang:AddTranslation('ru',{
     ['Time left'] = 'Осталось',
     ['sec.'] = 'сек.',
     ['Rewrite existing file'] = 'Перезаписть уже имеющийся файл',
+    ['Selection was cleared'] = 'Выделение снято',
 })

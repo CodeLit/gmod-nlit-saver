@@ -167,9 +167,18 @@ elseif CLIENT then
   -- function TOOL:RightClick()
 	--   return self:LeftClick(tr)
   -- end
-  
+
+  local cantNotify
+
   function TOOL:Reload()
     saver.Ents = {}
+    if !cantNotify then
+      LocalPlayer():Notify(l('Selection was cleared')..'.',2)
+      cantNotify = true
+      timer.Simple(0.01, function()
+        cantNotify = nil
+      end)
+    end
     return true
   end
 
