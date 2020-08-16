@@ -15,7 +15,7 @@ function ENL.Saver:SaveEnts(filename)
       table.insert(tbl,instbl)
     end
     local rmID
-    for i,data in pairs(tbl) do // записать первый элемент как самый низкий по Z
+    for i,data in pairs(tbl) do -- записать первый элемент как самый низкий по Z
       if i != 1 then
         if !tbl[1] then tbl[1] = data end
         if data.wpos.z <= tbl[1].wpos.z then
@@ -35,7 +35,8 @@ function ENL.Saver:SaveEnts(filename)
     file.Write(self.savePath..'/'..filename..'.txt',util.TableToJSON(tbl))
   end
   if file.Exists(self.savePath..'/'..filename..'.txt','DATA') then
-    NGUI:AcceptDialogue('Перезаписать уже имеющийся файл '..filename..'?', 'Yes', 'No', Write)
+    NGUI:AcceptDialogue(l('Rewrite existing file')..' '
+      ..filename..'?', 'Yes', 'No', Write)
   else
     Write()
   end

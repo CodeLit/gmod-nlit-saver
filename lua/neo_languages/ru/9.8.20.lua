@@ -29,4 +29,5 @@ NLang:AddTranslation('ru',{
     ['Saver cannot work too often'] = 'Сохранятор не может работать так часто',
     ['Time left'] = 'Осталось',
     ['sec.'] = 'сек.',
+    ['Rewrite existing file'] = 'Перезаписть уже имеющийся файл',
 })
