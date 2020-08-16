@@ -3,7 +3,7 @@ ENL.Saver = ENL.Saver or {}
 ENL.Saver.netstr = 'ENL Saver'
 ENL.Saver.freezeCvarName = 'enl_saver_freeze'
 --ENL.Saver.SpawnedProps = ENL.Saver.SpawnedProps or {}
-
+ENL.Saver.savePath = 'enl_saver/saves'
 
 function ENL.Saver:CanProceedEnt(ply,ent)
   if !IsValid(ply) or !IsValid(ent) then return end

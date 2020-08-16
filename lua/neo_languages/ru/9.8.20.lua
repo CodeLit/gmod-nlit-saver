@@ -26,4 +26,7 @@ NLang:AddTranslation('ru',{
     ['There is too far for the object'] = 'Слишком большое расстояние до предмета',
     ['Player is blocking item spawn'] = 'Игрок блокирует спавн предмета',
    -- ['Item is blocking item spawn'] = 'Предмет блокирует спавн другого предмета',
+    ['Saver cannot work too often'] = 'Сохранятор не может работать так часто',
+    ['Time left'] = 'Осталось',
+    ['sec.'] = 'сек.',
 })
