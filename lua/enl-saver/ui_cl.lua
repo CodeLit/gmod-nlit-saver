@@ -1,3 +1,5 @@
+local freezeCvar = CreateClientConVar(ENL.Saver.freezeCvarName,'0',true,true)
+
 function ENL.Saver:CreateUI(toolObj)
   local function AddButton(btn)
     local pnl = toolObj:Add('DPanel')
@@ -28,7 +30,7 @@ function ENL.Saver:CreateUI(toolObj)
     if string.find(txt,'Save ') == 1 and exp[2] then
       local num = tonumber(exp[2])
       if isnumber(num) then
-        while file.Exists(saver.savePath..'/'..'Save '..num..'.txt','DATA') do
+        while file.Exists(ENL.Saver.savePath..'/'..'Save '..num..'.txt','DATA') do
           num = num + 1
         end
         edit:SetText('Save '..num)
@@ -39,13 +41,13 @@ function ENL.Saver:CreateUI(toolObj)
   edit:Upd()
 
   AddButton(NGUI:AcceptButton('Save items', function()
-    saver:SaveEnts(edit:GetText())
+    self:SaveEnts(edit:GetText())
     toolObj.SavesList:Upd()
     edit:Upd()
   end))
 
   toolObj:AddControl('CheckBox', {
-    Label = l('Place with saving world positions'), Command = saver.wPosCvar:GetName()
+    Label = l('Place with saving world positions'), Command = self.wPosCvar:GetName()
   })
   toolObj:AddControl('CheckBox', {
     Label = l('Freeze Items On Spawn'), Command = freezeCvar:GetName()
@@ -60,7 +62,7 @@ function ENL.Saver:CreateUI(toolObj)
 
   function list:Upd()
     list:Clear()
-    local files = file.Find(saver.savePath..'/*.txt','DATA')
+    local files = file.Find(ENL.Saver.savePath..'/*.txt','DATA')
     for _,f in pairs(files) do
       f = string.StripExtension(f)
       list:AddLine(f)
@@ -73,10 +75,10 @@ function ENL.Saver:CreateUI(toolObj)
     local sel = list:GetSelected()[1]
     if !sel then return end
     local filename = sel:GetColumnText(1)
-    if file.Exists(saver.savePath..'/'..filename..'.txt','DATA') then
-      local tbl = util.JSONToTable(file.Read(saver.savePath..'/'..filename..'.txt'))
+    if file.Exists(self.savePath..'/'..filename..'.txt','DATA') then
+      local tbl = util.JSONToTable(file.Read(self.savePath..'/'..filename..'.txt'))
       if !istable(tbl) then return end
-        saver:ClientProp(!table.IsEmpty(saver.ClientProps), tbl)
+        self:ClientProp(!table.IsEmpty(self.ClientProps), tbl)
     end
   end))
 
@@ -84,10 +86,10 @@ function ENL.Saver:CreateUI(toolObj)
     local sel = list:GetSelected()[1]
     if !sel then return end
     local filename = sel:GetColumnText(1)
-    if file.Exists(saver.savePath..'/'..filename..'.txt','DATA') then
-      local tbl = util.JSONToTable(file.Read(saver.savePath..'/'..filename..'.txt'))
+    if file.Exists(self.savePath..'/'..filename..'.txt','DATA') then
+      local tbl = util.JSONToTable(file.Read(self.savePath..'/'..filename..'.txt'))
       if !istable(tbl) then return end
-      saver:SpawnEnts(tbl)
+      self:SpawnEnts(tbl)
     end
   end))
 
@@ -95,12 +97,12 @@ function ENL.Saver:CreateUI(toolObj)
     local sel = list:GetSelected()[1]
     if !sel then return end
     local filename = sel:GetColumnText(1)
-    if file.Exists(saver.savePath..'/'..filename..'.txt','DATA') then
+    if file.Exists(self.savePath..'/'..filename..'.txt','DATA') then
       local newName = edit:GetText()
       if newName == '' or newName == filename then return end
         NGUI:AcceptDialogue(l('Rename saving')..' '..filename
           ..' '..l('to')..' '..newName..'?', 'Yes', 'No', function()
-          file.Rename(saver.savePath..'/'..filename..'.txt',saver.savePath..'/'..newName..'.txt')
+          file.Rename(self.savePath..'/'..filename..'.txt',self.savePath..'/'..newName..'.txt')
           list:Upd() edit:Upd()
         end)
     end
@@ -110,9 +112,9 @@ function ENL.Saver:CreateUI(toolObj)
     local sel = list:GetSelected()[1]
     if !sel then return end
     local filename = sel:GetColumnText(1)
-    if file.Exists(saver.savePath..'/'..filename..'.txt','DATA') then
+    if file.Exists(self.savePath..'/'..filename..'.txt','DATA') then
       NGUI:AcceptDialogue(l('Remove saving')..' '..filename..'?', 'Yes', 'No', function()
-        file.Delete(saver.savePath..'/'..filename..'.txt')
+        file.Delete(self.savePath..'/'..filename..'.txt')
         list:Upd()
       end)
     end
@@ -121,6 +123,6 @@ function ENL.Saver:CreateUI(toolObj)
   AddButton(NGUI:Button('Update savings', function() list:Upd() end))
 
   AddButton(NGUI:Button('Clear selection', function()
-    saver.Ents = {}
+    self.Ents = {}
   end))
 end

@@ -27,8 +27,6 @@ if SERVER then
 
 elseif CLIENT then
 
-  local freezeCvar = CreateClientConVar(saver.freezeCvarName,'0',true,true)
-
   saver.LastSpawn = saver.LastSpawn or CurTime()
 
   function TOOL:BuildCPanel()
