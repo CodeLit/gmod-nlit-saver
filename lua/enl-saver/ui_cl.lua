@@ -1,6 +1,7 @@
 local freezeCvar = CreateClientConVar(ENL.Saver.freezeCvarName,'0',true,true)
 
 function ENL.Saver:CreateUI(toolObj)
+
   local function AddButton(btn)
     local pnl = toolObj:Add('DPanel')
     pnl:SetTall(30)
@@ -12,7 +13,8 @@ function ENL.Saver:CreateUI(toolObj)
     btn:Dock(FILL)
   end
 
-  toolObj:AddControl('Header', {Text = '#Tool.enl_saver.name', Description = '#Tool.enl_saver.desc'})
+  toolObj:AddControl('Header', {Text = '#Tool.enl_saver.name',
+    Description = '#Tool.enl_saver.desc'})
 
   local pnl = toolObj:Add('DPanel')
   pnl:SetTall(30)
@@ -24,7 +26,7 @@ function ENL.Saver:CreateUI(toolObj)
   edit:SetText('Save 1')
   edit:SelectAllOnFocus()
   
-  function edit:Upd()
+  edit.Upd = function()
     local txt = edit:GetText()
     local exp = string.Explode(' ',txt)
     if string.find(txt,'Save ') == 1 and exp[2] then
@@ -38,12 +40,12 @@ function ENL.Saver:CreateUI(toolObj)
     end
   end
 
-  edit:Upd()
+  edit.Upd()
 
   AddButton(NGUI:AcceptButton('Save items', function()
     self:SaveEnts(edit:GetText())
     toolObj.SavesList:Upd()
-    edit:Upd()
+    edit.Upd()
   end))
 
   toolObj:AddControl('CheckBox', {
@@ -60,7 +62,7 @@ function ENL.Saver:CreateUI(toolObj)
   list:SetMultiSelect(false)
   list:AddColumn(l('Savings'))
 
-  function list:Upd()
+  list.Upd = function()
     list:Clear()
     local files = file.Find(ENL.Saver.savePath..'/*.txt','DATA')
     for _,f in pairs(files) do
@@ -68,7 +70,7 @@ function ENL.Saver:CreateUI(toolObj)
       list:AddLine(f)
     end
   end
-  list:Upd()
+  list.Upd()
   toolObj.SavesList = list
 
   AddButton(NGUI:Button('Show/Hide structure', function()
@@ -102,25 +104,28 @@ function ENL.Saver:CreateUI(toolObj)
       if newName == '' or newName == filename then return end
         NGUI:AcceptDialogue(l('Rename saving')..' '..filename
           ..' '..l('to')..' '..newName..'?', 'Yes', 'No', function()
-          file.Rename(self.savePath..'/'..filename..'.txt',self.savePath..'/'..newName..'.txt')
-          list:Upd() edit:Upd()
+          file.Rename(self.savePath..'/'..filename..'.txt',
+            self.savePath..'/'..newName..'.txt')
+          list.Upd() edit.Upd()
         end)
     end
   end))
 
-  AddButton(NGUI:DeclineButton('Remove saving', function()
-    local sel = list:GetSelected()[1]
-    if !sel then return end
-    local filename = sel:GetColumnText(1)
-    if file.Exists(self.savePath..'/'..filename..'.txt','DATA') then
-      NGUI:AcceptDialogue(l('Remove saving')..' '..filename..'?', 'Yes', 'No', function()
-        file.Delete(self.savePath..'/'..filename..'.txt')
-        list:Upd()
-      end)
-    end
-  end))
+    AddButton(NGUI:DeclineButton('Remove saving', function()
+        local sel = list:GetSelected()[1]
+        if !sel then return end
+        local filename = sel:GetColumnText(1)
+        if file.Exists(self.savePath..'/'..filename..'.txt','DATA') then
+            NGUI:AcceptDialogue(l('Remove saving')..' '..filename..'?', 'Yes', 'No', function()
+            file.Delete(self.savePath..'/'..filename..'.txt')
+            list.Upd()
+            end)
+        end
+    end))
 
-  AddButton(NGUI:Button('Update savings', function() list:Upd() end))
+    AddButton(NGUI:Button('Update savings', function()
+        list.Upd()
+    end))
 
   AddButton(NGUI:Button('Clear selection', function()
     self.Ents = {}
