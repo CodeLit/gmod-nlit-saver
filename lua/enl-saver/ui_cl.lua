@@ -62,9 +62,10 @@ function ENL.Saver:CreateUI(toolObj)
   list:SetMultiSelect(false)
   list:AddColumn(l('Savings'))
 
+  local files = file.Find(self.savePath..'/'..'*.txt','DATA')
+
   list.Upd = function()
     list:Clear()
-    local files = file.Find(ENL.Saver.savePath..'/*.txt','DATA')
     for _,f in pairs(files) do
       f = string.StripExtension(f)
       list:AddLine(f)
