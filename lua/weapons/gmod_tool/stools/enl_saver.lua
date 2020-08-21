@@ -30,7 +30,7 @@ elseif CLIENT then
   saver.LastSpawn = saver.LastSpawn or CurTime()
 
   function TOOL:BuildCPanel()
-    ENL.Saver:CreateUI(self)
+    saver:CreateUI(self)
   end
   
   local cantNotify
