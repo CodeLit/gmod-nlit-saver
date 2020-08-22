@@ -81,15 +81,6 @@ function saver:CreateUI(toolObj)
 
   saves:Upd()
 
-  -- AddButton(NGUI:Button('Show/Hide structure', function()
-  --   local sel = saves:GetSelected()[1]
-  --   if !sel then return end
-  --   local saveName = sel:GetColumnText(1)
-  --   if saver:SaveExists(saveName) then
-  --     saver:SetClientProps(!table.IsEmpty(saver.ClientProps),saver:GetSave(saveName))
-  --   end
-  -- end))
-
   AddButton(NGUI:Button('Place saving', function()
     local sel = saves:GetSelected()[1]
     if !sel then return end
@@ -128,11 +119,13 @@ function saver:CreateUI(toolObj)
       end
   end))
 
-  -- AddButton(NGUI:Button('Update savings', function()
-  --   saves:Upd()
-  -- end))
-
   AddButton(NGUI:Button('Clear selection', function()
     saver.Ents = {}
   end))
+
+  if LocalPlayer():IsSuperAdmin() then
+    toolObj:AddControl('Slider', {
+      Label = l('Max props')..' [Admins]', Command = 'sbox_maxprops'
+    })
+  end
 end

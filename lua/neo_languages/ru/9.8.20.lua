@@ -33,4 +33,5 @@ NLang:AddTranslation('ru',{
     ['Rewrite existing save'] = 'Перезаписть уже имеющееся сохранение',
     ['Selection was cleared'] = 'Выделение снято',
     Preview = 'Предпросмотр',
+    ['Max props'] = 'Макс. пропов',
 })
