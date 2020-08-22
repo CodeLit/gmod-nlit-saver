@@ -41,12 +41,12 @@ function saver:CreateUI(toolObj)
     end
   end
 
-  edit.Upd()
+  edit:Upd()
 
   AddButton(NGUI:AcceptButton('Save items', function()
     saver:SaveEnts(edit:GetText())
     toolObj.SavesList:Upd()
-    edit.Upd()
+    edit:Upd()
   end))
 
   toolObj:AddControl('CheckBox', {
@@ -72,7 +72,7 @@ function saver:CreateUI(toolObj)
       list:AddLine(f)
     end
   end
-  list.Upd()
+  list:Upd()
   toolObj.SavesList = list
 
   AddButton(NGUI:Button('Show/Hide structure', function()
@@ -80,9 +80,8 @@ function saver:CreateUI(toolObj)
     if !sel then return end
     local filename = sel:GetColumnText(1)
     if file.Exists(saver.savePath..'/'..filename..'.txt','DATA') then
-      local tbl = util.JSONToTable(file.Read(saver.savePath..'/'..filename..'.txt'))
-      if !istable(tbl) then return end
-        saver:ClientProp(!table.IsEmpty(saver.ClientProps), tbl)
+      saver:ClientProp(!table.IsEmpty(saver.ClientProps),
+        NStr:FromJson(file.Read(saver.savePath..'/'..filename..'.txt')))
     end
   end))
 
@@ -91,9 +90,7 @@ function saver:CreateUI(toolObj)
     if !sel then return end
     local filename = sel:GetColumnText(1)
     if file.Exists(saver.savePath..'/'..filename..'.txt','DATA') then
-      local tbl = util.JSONToTable(file.Read(saver.savePath..'/'..filename..'.txt'))
-      if !istable(tbl) then return end
-      saver:SpawnEnts(tbl)
+      saver:SpawnEnts(NStr:FromJson(file.Read(saver.savePath..'/'..filename..'.txt')))
     end
   end))
 
@@ -108,7 +105,7 @@ function saver:CreateUI(toolObj)
           ..' '..l('to')..' '..newName..'?', 'Yes', 'No', function()
           file.Rename(saver.savePath..'/'..filename..'.txt',
             saver.savePath..'/'..newName..'.txt')
-          list.Upd() edit.Upd()
+          list:Upd() edit:Upd()
         end)
     end
   end))
@@ -120,13 +117,13 @@ function saver:CreateUI(toolObj)
       if file.Exists(saver.savePath..'/'..filename..'.txt','DATA') then
           NGUI:AcceptDialogue(l('Remove saving')..' '..filename..'?', 'Yes', 'No', function()
           file.Delete(saver.savePath..'/'..filename..'.txt')
-          list.Upd()
+          list:Upd()
           end)
       end
   end))
 
   AddButton(NGUI:Button('Update savings', function()
-      list.Upd()
+      list:Upd()
   end))
 
   AddButton(NGUI:Button('Clear selection', function()
