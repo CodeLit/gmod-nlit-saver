@@ -1,41 +1,36 @@
 TOOL.Category = 'Construction'
 TOOL.Name = '#tool.enl_saver.name'
 
-local saver = ENL.Saver
+if CLIENT then
 
-if SERVER then
-
-	function TOOL:LeftClick(tr)
-	  local ent,ply = tr.Entity,self:GetOwner()
-    if !table.HasValue(NCfg:Get('Saver','Classes To Save'), ent:GetClass()) then
-      return false
-    end
-    net.Start(saver.netstr)
-    net.WriteBool(false)
-    net.WriteEntity(ent)
-    net.Send(ply)
-	  return true
-	end
-
-	function TOOL:RightClick(tr)
-	  return self:LeftClick(tr)
-  end
-  
-  function TOOL:Reload()
-    return true
-  end
-
-elseif CLIENT then
+  local saver = ENL.Saver
 
   saver.LastSpawn = saver.LastSpawn or CurTime()
 
   function TOOL:BuildCPanel()
     saver:CreateUI(self)
   end
+
+  local function SelectEnt(ent,bSelect)
+    if !IsValid(ent) or !table.HasValue(NCfg:Get('Saver','Classes To Save'), ent:GetClass()) then
+      return true
+    else
+      saver.Ents[ent] = bSelect
+    end
+    return true
+  end
   
+  function TOOL:LeftClick(tr)
+	  return SelectEnt(tr.Entity,true)
+	end
+
+	function TOOL:RightClick(tr)
+	  return SelectEnt(tr.Entity,false)
+  end
+
   local cantNotify
 
-  function TOOL:Reload()
+  function TOOL:Reload(tr)
     saver.Ents = {}
     if !cantNotify then
       LocalPlayer():Notify(l('Selection was cleared')..'.',2)
@@ -45,6 +40,20 @@ elseif CLIENT then
       end)
     end
     return true
+  end
+
+elseif SERVER then
+
+  function TOOL:LeftClick(tr)
+	  return true
+  end
+
+  function TOOL:RightClick(tr)
+	  return self:LeftClick(tr)
+  end
+
+  function TOOL:Reload(tr)
+    return self:LeftClick(tr)
   end
 
 end
