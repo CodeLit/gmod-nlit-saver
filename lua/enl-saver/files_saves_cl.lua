@@ -10,6 +10,12 @@ function saver:GetSave(name)
     return self:GetSaves()[name]
 end
 
+function saver:GetSelectedSave()
+    local sel = self.savesList:GetSelected()
+    if !sel then return end
+    return self:GetSave(sel[1]:GetColumnText(1))
+end
+
 function saver:WriteSaveData(tbl)
     return file.Write(saver.savePath, NStr:ToJson(tbl))
 end

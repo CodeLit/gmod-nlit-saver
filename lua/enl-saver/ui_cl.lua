@@ -60,6 +60,9 @@ function saver:CreateUI(toolObj)
   toolObj:AddControl('CheckBox', {
     Label = l('Freeze Items On Spawn'), Command = freezeCvar:GetName()
   })
+  toolObj:AddControl('CheckBox', {
+    Label = l('Preview'), Command = saver.previewCvar:GetName()
+  })
 
   local saves = vgui.Create('DListView', toolObj)
   saves:SetTall(ScrH() / 3)
@@ -78,14 +81,14 @@ function saver:CreateUI(toolObj)
 
   saves:Upd()
 
-  AddButton(NGUI:Button('Show/Hide structure', function()
-    local sel = saves:GetSelected()[1]
-    if !sel then return end
-    local saveName = sel:GetColumnText(1)
-    if saver:SaveExists(saveName) then
-      saver:ClientProp(!table.IsEmpty(saver.ClientProps),saver:GetSave(saveName))
-    end
-  end))
+  -- AddButton(NGUI:Button('Show/Hide structure', function()
+  --   local sel = saves:GetSelected()[1]
+  --   if !sel then return end
+  --   local saveName = sel:GetColumnText(1)
+  --   if saver:SaveExists(saveName) then
+  --     saver:ClientProp(!table.IsEmpty(saver.ClientProps),saver:GetSave(saveName))
+  --   end
+  -- end))
 
   AddButton(NGUI:Button('Place saving', function()
     local sel = saves:GetSelected()[1]

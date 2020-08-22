@@ -4,7 +4,7 @@ local saver = ENL.Saver
 
 saver.Ents = saver.Ents or {}
 saver.ClientProps = saver.ClientProps or {}
-saver.wPosCvar = CreateClientConVar('enl_saver_worldposspawns','0')
+saver.wPosCvar = CreateClientConVar('enl_saver_worldposspawns','0', false)
 
 function saver:GetSpawnDelay()
   local addTime = NCfg:Get('Saver','Delay Between Single Propspawn')
@@ -14,28 +14,28 @@ function saver:GetSpawnDelay()
   return addTime
 end
 
-function saver:ClientProp(bDelete, tbl)
-  if !bDelete then
-      for i, data in pairs(tbl) do
-        local client = ents.CreateClientProp(data.mdl)
-        client:SetPos(data.wpos)
-        client:SetAngles(data.wang)
-        client:GetPhysicsObject():EnableMotion(false)
-        client:Spawn()
+function saver:ClientProp(bPreview, tbl)
+  if bPreview then
+    for _, data in pairs(tbl) do
+      local client = ents.CreateClientProp(data.mdl)
+      client:SetPos(data.wpos)
+      client:SetAngles(data.wang)
+      client:GetPhysicsObject():EnableMotion(false)
+      client:Spawn()
 
-        table.insert(saver.ClientProps, client)
-      end
+      table.insert(saver.ClientProps, client)
+    end
   else
-      if !table.IsEmpty(saver.ClientProps) then
-        for _, ent in pairs(saver.ClientProps) do
-          if IsValid(ent) then
-            ent:Remove()
-          else
-            saver.ClientProps = {}
-          end
+    if !table.IsEmpty(saver.ClientProps) then
+      for _, ent in pairs(saver.ClientProps) do
+        if IsValid(ent) then
+          ent:Remove()
+        else
+          saver.ClientProps = {}
         end
-        saver.ClientProps = {}
       end
+      saver.ClientProps = {}
+    end
   end 
 end
 

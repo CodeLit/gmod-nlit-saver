@@ -18,9 +18,9 @@ NLang:AddTranslation('ru',{
     ['Remove saving'] = 'Удалить сохранение',
     ['Update savings'] = 'Обновить сохранения',
     ['Clear selection'] = 'Сбросить выделение',
-    ['Yes'] = 'Да',
-    ['No'] = 'Нет',
-    ['to'] = 'в',
+    Yes = 'Да',
+    No = 'Нет',
+    to = 'в',
     ['Press R button to reject creation'] = 'Нажмите R, чтобы отменить создание',
     ['Saver is creating objects'] = 'Сохранятор создает объекты',
     ['The item must be a prop'] = 'Предмет должен быть пропом',
@@ -32,4 +32,5 @@ NLang:AddTranslation('ru',{
     ['sec.'] = 'сек.',
     ['Rewrite existing save'] = 'Перезаписть уже имеющееся сохранение',
     ['Selection was cleared'] = 'Выделение снято',
+    Preview = 'Предпросмотр',
 })
