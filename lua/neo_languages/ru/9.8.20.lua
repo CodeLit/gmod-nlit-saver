@@ -4,6 +4,7 @@ NLang:AddTranslation('ru',{
     ['Max. Items Spawn Distance'] = 'Макс. расстояние спавна предметов',
     ['Save Cooldown'] = 'Перерыв между сохранениями',
     ['Delay Between Single Propspawn'] = 'Перерыв между спавном предметов',
+    Save = 'Сохранение',
     Saver = 'Сохранятор',
     Savings = 'Сохранения',
     ['Saves groups of items'] = 'Сохраняет связки предметов',
@@ -29,6 +30,6 @@ NLang:AddTranslation('ru',{
     ['Saver cannot work too often'] = 'Сохранятор не может работать так часто',
     ['Time left'] = 'Осталось',
     ['sec.'] = 'сек.',
-    ['Rewrite existing file'] = 'Перезаписть уже имеющийся файл',
+    ['Rewrite existing save'] = 'Перезаписть уже имеющееся сохранение',
     ['Selection was cleared'] = 'Выделение снято',
 })

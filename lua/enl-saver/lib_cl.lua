@@ -1,55 +1,12 @@
 -- [do not obfuscate]
 
-ENL.Saver.Ents = ENL.Saver.Ents or {}
-ENL.Saver.ClientProps = ENL.Saver.ClientProps or {}
-ENL.Saver.wPosCvar = CreateClientConVar('enl_saver_worldposspawns','0')
+local saver = ENL.Saver
 
-function ENL.Saver:SaveEnts(filename)
-  if !file.IsDir(self.savePath,'DATA') then file.CreateDir(self.savePath) end
-  local function Write()
-    if table.Count(ENL.Saver.Ents) <= 0 then return end
-    local tbl = {[1]=false}
-    for ent,_ in pairs(ENL.Saver.Ents) do
-      local instbl = {mdl = ent:GetModel()}
-      instbl.ent = ent
-      instbl.class = ent:GetClass()
-      instbl.wpos = ent:GetPos()
-      instbl.wang = ent:GetAngles()
-      instbl.mat = ent:GetMaterial()
-      local clr = ent:GetColor()
-      if clr != Color(255,255,255) then instbl.col = clr end
-      table.insert(tbl,instbl)
-    end
-    local rmID
-    for i,data in pairs(tbl) do -- записать первый элемент как самый низкий по Z
-      if i != 1 then
-        if !tbl[1] then tbl[1] = data end
-        if data.wpos.z <= tbl[1].wpos.z then
-          tbl[1] = data
-          rmID = i
-        end
-      end
-    end
-    for i,data in pairs(tbl) do
-      if i == 1 then data.lpos = data.wpos data.lang = data.wang
-      else
-        data.lpos = tbl[1].ent:WorldToLocal(data.wpos)
-        data.lang = tbl[1].ent:WorldToLocalAngles(data.wang)
-      end
-    end
-    table.remove(tbl,rmID)
-    file.Write(self.savePath..'/'..filename..'.txt',util.TableToJSON(tbl))
-  end
-  if file.Exists(self.savePath..'/'..filename..'.txt','DATA') then
-    NGUI:AcceptDialogue(l('Rewrite existing file')..' '
-      ..filename..'?', 'Yes', 'No', Write)
-  else
-    Write()
-  end
-  ENL.Saver.Ents = {}
-end
+saver.Ents = saver.Ents or {}
+saver.ClientProps = saver.ClientProps or {}
+saver.wPosCvar = CreateClientConVar('enl_saver_worldposspawns','0')
 
-function ENL.Saver:GetSpawnDelay()
+function saver:GetSpawnDelay()
   local addTime = NCfg:Get('Saver','Delay Between Single Propspawn')
   if NL and NL.CustomNet and NL.CustomNet.GetDelayBetweenSameNetStrings then
     addTime = addTime + NL.CustomNet.GetDelayBetweenSameNetStrings()
@@ -57,7 +14,7 @@ function ENL.Saver:GetSpawnDelay()
   return addTime
 end
 
-function ENL.Saver:ClientProp(bDelete, tbl)
+function saver:ClientProp(bDelete, tbl)
   if !bDelete then
       for i, data in pairs(tbl) do
         local client = ents.CreateClientProp(data.mdl)
@@ -66,41 +23,42 @@ function ENL.Saver:ClientProp(bDelete, tbl)
         client:GetPhysicsObject():EnableMotion(false)
         client:Spawn()
 
-        table.insert(ENL.Saver.ClientProps, client)
+        table.insert(saver.ClientProps, client)
       end
   else
-      if !table.IsEmpty(ENL.Saver.ClientProps) then
-        for _, ent in pairs(ENL.Saver.ClientProps) do
+      if !table.IsEmpty(saver.ClientProps) then
+        for _, ent in pairs(saver.ClientProps) do
           if IsValid(ent) then
             ent:Remove()
           else
-            ENL.Saver.ClientProps = {}
+            saver.ClientProps = {}
           end
         end
-        ENL.Saver.ClientProps = {}
+        saver.ClientProps = {}
       end
   end 
 end
 
-function ENL.Saver:SpawnEnts(tbl)
-  local coolDownTimeLeft = math.Round((ENL.Saver.LastSpawn + NCfg:Get('Saver','Save Cooldown'))-CurTime(),1)
+function saver:SpawnEnts(tbl)
+  local coolDownTimeLeft = math.Round((saver.LastSpawn +
+    NCfg:Get('Saver','Save Cooldown'))-CurTime(),1)
   if coolDownTimeLeft >= 0 then
     LocalPlayer():Notify(l('Saver cannot work too often')..'.'..l('Time left')
       ..': '..coolDownTimeLeft..' '..l('sec.'))
     return
   end
-  if ENL.Saver.InProgress then return end
-  ENL.Saver.InProgress = true
+  if saver.InProgress then return end
+  saver.InProgress = true
   timer.Create('NL Duplicator Progress Timer',(self:GetSpawnDelay()*table.Count(tbl)),1,function()
-    ENL.Saver.LastSpawn = CurTime()
-    ENL.Saver.InProgress = nil
-    ENL.Saver.Abort = nil
+    saver.LastSpawn = CurTime()
+    saver.InProgress = nil
+    saver.Abort = nil
   end)
   local useWPos = self.wPosCvar:GetBool()
   for i,data in pairs(tbl) do
     timer.Simple(self:GetSpawnDelay()*(i-1),function()
-      if ENL.Saver.Abort then return end
-      net.Start(ENL.Saver.netstr)
+      if saver.Abort then return end
+      net.Start(saver.netstr)
       if !useWPos then data.wpos = nil end
       if i == 1 then data.firstEnt = true end
       data.useWPos = (useWPos or nil)
@@ -108,5 +66,5 @@ function ENL.Saver:SpawnEnts(tbl)
       net.SendToServer()
     end)
   end
-  ENL.Saver:ClientProp(true)
+  saver:ClientProp(true)
 end
