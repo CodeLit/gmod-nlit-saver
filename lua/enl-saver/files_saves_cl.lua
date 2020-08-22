@@ -7,12 +7,13 @@ function saver:GetSaves()
 end
 
 function saver:GetSave(name)
-    return self:GetSaves()[name]
+    local saves = self:GetSaves()
+    return saves[name] or nil
 end
 
 function saver:GetSelectedSave()
     local sel = self.savesList:GetSelected()
-    if !sel then return end
+    if !sel or !sel[1] then return end
     return self:GetSave(sel[1]:GetColumnText(1))
 end
 

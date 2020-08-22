@@ -14,11 +14,11 @@ net.Receive(ENL.Saver.netstr,function(_,ply)
         ang:RotateAroundAxis(ply:GetRight(),-90)
         prop:SetAngles(Angle(0,ang.y,0))
         if data.firstEnt then
-        local trace = ply:GetEyeTrace()
-        prop:SetPos(trace.HitPos)
+            local trace = ply:GetEyeTrace()
+            prop:SetPos(trace.HitPos)
         else
-        local fent = firstEnts[ply:SteamID()]
-        if !IsValid(fent) then return end
+            local fent = firstEnts[ply:SteamID()]
+            if !IsValid(fent) then return end
             prop:SetPos(fent:LocalToWorld(data.lpos))
             prop:SetAngles(fent:LocalToWorldAngles(data.lang))
         end

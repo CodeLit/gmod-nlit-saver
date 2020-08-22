@@ -11,8 +11,9 @@ function ENL.Saver:CanProceedEnt(ply,ent)
     return
   end
   if ply:GetPos():Distance(ent:GetPos()) > NCfg:Get('Saver','Max. Items Spawn Distance') then
-    ply:Notify(l('The item must be a prop',ply:GetLang())..'!')
-    ply:Notify(l('There is too far for the object',ply:GetLang())..'!') return false end
+    ply:Notify(l('There is too far for the object',ply:GetLang())..'!')
+    return false
+  end
   local tr = util.TraceLine({start=ply:EyePos(),endpos=ent:WorldSpaceCenter(),
     filter = function(e) if e.SID != ply.SID then return true end end
   })

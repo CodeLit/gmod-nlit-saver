@@ -86,7 +86,7 @@ function saver:CreateUI(toolObj)
   --   if !sel then return end
   --   local saveName = sel:GetColumnText(1)
   --   if saver:SaveExists(saveName) then
-  --     saver:ClientProp(!table.IsEmpty(saver.ClientProps),saver:GetSave(saveName))
+  --     saver:SetClientProps(!table.IsEmpty(saver.ClientProps),saver:GetSave(saveName))
   --   end
   -- end))
 

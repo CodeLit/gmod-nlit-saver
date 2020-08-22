@@ -14,17 +14,42 @@ function saver:GetSpawnDelay()
   return addTime
 end
 
-function saver:ClientProp(bPreview, tbl)
-  if bPreview then
-    for _, data in pairs(tbl) do
-      local client = ents.CreateClientProp(data.mdl)
-      client:SetPos(data.wpos)
-      client:SetAngles(data.wang)
-      client:GetPhysicsObject():EnableMotion(false)
-      client:Spawn()
+local updTimer = 'enl-saver-update-cl-props'
 
-      table.insert(saver.ClientProps, client)
-    end
+function saver:SetClientProps()
+  local ply = LocalPlayer()
+  if self.previewCvar:GetBool() then
+    timer.Create(updTimer, 0, 0, function()
+      local tbl = saver:GetSelectedSave() or {}
+      local firstEnt
+      for i, data in pairs(tbl or {}) do
+        local existed = saver.ClientProps[i]
+        local cliProp = existed or ents.CreateClientProp(data.mdl)
+        cliProp:SetModel(data.mdl)
+        if saver.wPosCvar:GetBool() then
+          cliProp:SetPos(data.wpos)
+          cliProp:SetAngles(data.wang)
+        else
+          if IsValid(firstEnt) then
+            cliProp:SetPos(firstEnt:LocalToWorld(data.lpos))
+            cliProp:SetAngles(firstEnt:LocalToWorldAngles(data.lang))
+          else
+            local tr = ply:GetEyeTrace()
+            cliProp:SetPos(tr.HitPos)
+            local ang = ply:EyeAngles()
+            ang:RotateAroundAxis(ply:GetRight(),-90)
+            cliProp:SetAngles(Angle(0,ang.y,0))
+            cliProp:SetPos(cliProp:GetPos()+Vector(0, 0, cliProp:GetModelRadius()))
+          end
+          firstEnt = firstEnt or cliProp
+        end
+        if !existed then
+          cliProp:GetPhysicsObject():EnableMotion(false)
+          cliProp:Spawn()
+          saver.ClientProps[i] = cliProp
+        end
+      end
+    end)
   else
     if !table.IsEmpty(saver.ClientProps) then
       for _, ent in pairs(saver.ClientProps) do
@@ -35,6 +60,7 @@ function saver:ClientProp(bPreview, tbl)
         end
       end
       saver.ClientProps = {}
+      timer.Remove(updTimer)
     end
   end 
 end
@@ -66,5 +92,5 @@ function saver:SpawnEnts(tbl)
       net.SendToServer()
     end)
   end
-  saver:ClientProp(true)
+  RunConsoleCommand(saver.previewCvar:GetName(),0)
 end

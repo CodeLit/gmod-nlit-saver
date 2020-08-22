@@ -7,7 +7,7 @@ local saver = ENL.Saver
 saver.previewCvar = CreateClientConVar('enl_saver_preview','0')
 
 cvars.AddChangeCallback(saver.previewCvar:GetName(), function(cName, old, new)
-  saver:ClientProp(tobool(new), saver:GetSelectedSave())
+  saver:SetClientProps()
 end)
 
 hook.Add('HUDPaint','ENL Dulpicator Progress',function()
