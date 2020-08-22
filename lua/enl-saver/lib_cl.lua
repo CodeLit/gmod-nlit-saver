@@ -1,3 +1,5 @@
+-- [do not obfuscate]
+
 ENL.Saver.Ents = ENL.Saver.Ents or {}
 ENL.Saver.ClientProps = ENL.Saver.ClientProps or {}
 ENL.Saver.wPosCvar = CreateClientConVar('enl_saver_worldposspawns','0')
