@@ -1,3 +1,5 @@
+-- [do not obfuscate]
+
 local saver = ENL.Saver
 
 local freezeCvar = CreateClientConVar(saver.freezeCvarName,'0',true,true)
