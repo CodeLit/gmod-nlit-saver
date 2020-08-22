@@ -125,7 +125,7 @@ function saver:CreateUI(toolObj)
 
   if LocalPlayer():IsSuperAdmin() then
     toolObj:AddControl('Slider', {
-      Label = l('Max props')..' [Admins]', Command = 'sbox_maxprops'
+      Label = l('Max props')..' ['..l('Admins')..']', Command = 'sbox_maxprops'
     })
   end
 end

@@ -34,4 +34,5 @@ NLang:AddTranslation('ru',{
     ['Selection was cleared'] = 'Выделение снято',
     Preview = 'Предпросмотр',
     ['Max props'] = 'Макс. пропов',
+    Admins = 'Админы',
 })
