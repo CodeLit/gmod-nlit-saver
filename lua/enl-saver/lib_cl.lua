@@ -44,7 +44,10 @@ function saver:SetClientProps()
           firstEnt = firstEnt or cliProp
         end
         if !existed then
-          cliProp:GetPhysicsObject():EnableMotion(false)
+          local phys = cliProp:GetPhysicsObject()
+          if IsValid(phys) then
+            phys:EnableMotion(false)
+          end
           cliProp:Spawn()
           saver.ClientProps[i] = cliProp
         end
