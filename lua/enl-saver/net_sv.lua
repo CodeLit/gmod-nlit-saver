@@ -25,6 +25,7 @@ net.Receive(ENL.Saver.netstr,function(_,ply)
     end
 
     prop:SetModel(data.mdl)
+    
     if !ENL.Saver:CanProceedEnt(ply,prop) then prop:Remove() return end
     if prop.CPPISetOwner then
         prop:CPPISetOwner(ply)
