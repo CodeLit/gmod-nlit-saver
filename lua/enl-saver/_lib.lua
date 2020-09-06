@@ -4,7 +4,6 @@ ENL.Saver.netstr = 'ENL Saver'
 ENL.Saver.freezeCvarName = 'enl_saver_freeze'
 ENL.Saver.dataDir = 'enl_saver'
 
-
 function ENL.Saver:CanProceedEnt(ply,ent)
   if !IsValid(ply) or !IsValid(ent) then return end
   if !table.HasValue(NCfg:Get('Saver','Classes To Save'), ent:GetClass()) then
