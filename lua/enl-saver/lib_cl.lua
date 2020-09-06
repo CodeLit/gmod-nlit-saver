@@ -30,6 +30,7 @@ function saver:SetClientProps()
           cliProp:SetPos(data.wpos)
           cliProp:SetAngles(data.wang)
         else
+          
           if IsValid(firstEnt) then
             cliProp:SetPos(firstEnt:LocalToWorld(data.lpos))
             cliProp:SetAngles(firstEnt:LocalToWorldAngles(data.lang))
