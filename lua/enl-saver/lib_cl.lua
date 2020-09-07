@@ -18,15 +18,15 @@ local updTimer = 'enl-saver-update-cl-props'
 
 function saver:SetClientProps()
   local ply = LocalPlayer()
-  if saver.previewCvar:GetBool() then
+  if self.previewCvar:GetBool() then
     timer.Create(updTimer, 0, 0, function()
-      local tbl = saver:GetSelectedSave() or {}
+      local tbl = self:GetSelectedSave() or {}
       local firstEnt
       for i, data in pairs(tbl or {}) do
-        local existed = saver.ClientProps[i]
+        local existed = self.ClientProps[i]
         local cliProp = existed or ents.CreateClientProp(data.mdl)
         cliProp:SetModel(data.mdl)
-        if saver.wPosCvar:GetBool() then
+        if self.wPosCvar:GetBool() then
           cliProp:SetPos(data.wpos)
           cliProp:SetAngles(data.wang)
         else
@@ -50,46 +50,46 @@ function saver:SetClientProps()
             phys:EnableMotion(false)
           end
           cliProp:Spawn()
-          saver.ClientProps[i] = cliProp
+          self.ClientProps[i] = cliProp
         end
       end
     end)
   else
-    if !table.IsEmpty(saver.ClientProps) then
-      for _, ent in pairs(saver.ClientProps) do
+    if !table.IsEmpty(self.ClientProps) then
+      for _, ent in pairs(self.ClientProps) do
         if IsValid(ent) then
           ent:Remove()
         else
-          saver.ClientProps = {}
+          self.ClientProps = {}
         end
       end
-      saver.ClientProps = {}
+      self.ClientProps = {}
       timer.Remove(updTimer)
     end
   end 
 end
 
 function saver:SpawnEnts(tbl)
-  local coolDownTimeLeft = math.Round((saver.LastSpawn +
+  local coolDownTimeLeft = math.Round((self.LastSpawn +
     NCfg:Get('Saver','Save Cooldown'))-CurTime(),1)
-    
+
   if coolDownTimeLeft >= 0 then
     LocalPlayer():Notify(l('Saver cannot work too often')..'.'..l('Time left')
       ..': '..coolDownTimeLeft..' '..l('sec.'))
     return
   end
-  if saver.InProgress then return end
-  saver.InProgress = true
+  if self.InProgress then return end
+  self.InProgress = true
 
-  timer.Create('NL Duplicator Progress Timer',(saver:GetSpawnDelay()*table.Count(tbl)),1,function()
+  timer.Create('NL Duplicator Progress Timer',(self:GetSpawnDelay()*table.Count(tbl)),1,function()
     saver.LastSpawn = CurTime()
     saver.InProgress = nil
     saver.Abort = nil
   end)
 
-  local useWPos = saver.wPosCvar:GetBool()
+  local useWPos = self.wPosCvar:GetBool()
   for i,data in pairs(tbl) do
-    timer.Simple(saver:GetSpawnDelay()*(i-1),function()
+    timer.Simple(self:GetSpawnDelay()*(i-1),function()
       if saver.Abort then return end
       net.Start(saver.netstr)
       if !useWPos then data.wpos = nil end
@@ -99,5 +99,5 @@ function saver:SpawnEnts(tbl)
       net.SendToServer()
     end)
   end
-  RunConsoleCommand(saver.previewCvar:GetName(),0)
+  RunConsoleCommand(self.previewCvar:GetName(),0)
 end
