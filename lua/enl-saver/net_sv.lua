@@ -59,9 +59,11 @@ net.Receive(ENL.Saver.netstr,function(_,ply)
             -- ent,ghostoff,nofreeze,collision,forcefreeze
         end)
     end
+    
     if data.mat and data.mat != prop:GetMaterial() then
         prop:SetMaterial(data.mat)
     end
+
     local color = (data.col and Color(data.col.r,data.col.g,data.col.b,data.col.a))
     if IsColor(color) then prop:SetColor(color) end
     if data.firstEnt then
