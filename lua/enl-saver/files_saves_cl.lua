@@ -7,14 +7,14 @@ function saver:GetSaves()
 end
 
 function saver:GetSave(name)
-    local saves = self:GetSaves()
+    local saves = saver:GetSaves()
     return saves[name] or nil
 end
 
 function saver:GetSelectedSave()
     local sel = self.savesList:GetSelected()
     if !sel or !sel[1] then return end
-    return self:GetSave(sel[1]:GetColumnText(1))
+    return saver:GetSave(sel[1]:GetColumnText(1))
 end
 
 function saver:WriteSaveData(tbl)
@@ -22,31 +22,31 @@ function saver:WriteSaveData(tbl)
 end
 
 function saver:SaveExists(saveName)
-    return tobool(self:GetSave(saveName))
+    return tobool(saver:GetSave(saveName))
 end
 
 function saver:RemoveSave(saveName)
-    local data = self:GetSaves()
+    local data = saver:GetSaves()
     data[saveName] = nil
-    self:WriteSaveData(data)
+    saver:WriteSaveData(data)
 end
 
 function saver:RenameSave(old,new)
-    local data = self:GetSaves()
+    local data = saver:GetSaves()
     data[new] = data[old]
     data[old] = nil
-    self:WriteSaveData(data)
+    saver:WriteSaveData(data)
 end
 
 function saver:SaveEnts(saveName)
-    local fl = self:GetSaves()
+    local fl = saver:GetSaves()
     if !file.IsDir(saver.dataDir,'DATA') then
         file.CreateDir(saver.dataDir)
     end
     local function Write()
-        if table.Count(saver.Ents) <= 0 then return end
+        if table.Count(self.Ents) <= 0 then return end
         local tbl = {[1]=false}
-        for ent,_ in pairs(saver.Ents) do
+        for ent,_ in pairs(self.Ents) do
             local instbl = {mdl = ent:GetModel()}
             instbl.ent = ent
             instbl.class = ent:GetClass()
@@ -88,5 +88,5 @@ function saver:SaveEnts(saveName)
     else
         Write()
     end
-    saver.Ents = {}
+    self.Ents = {}
 end

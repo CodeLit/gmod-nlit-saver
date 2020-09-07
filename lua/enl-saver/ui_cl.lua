@@ -50,7 +50,7 @@ function saver:CreateUI(toolObj)
 
   AddButton(NGUI:AcceptButton('Save items', function()
     saver:SaveEnts(edit:GetText())
-    saver.savesList:Upd()
+    ENL.Saver.savesList:Upd()
     edit:Upd()
   end))
 
@@ -70,7 +70,7 @@ function saver:CreateUI(toolObj)
   saves:DockMargin(0, 10, 0, 0)
   saves:SetMultiSelect(false)
   saves:AddColumn(l('Savings'))
-  saver.savesList = saves
+  ENL.Saver.savesList = saves
 
   function saves:Upd()
     self:Clear()
