@@ -1,8 +1,9 @@
 local firstEnts = {}
 
 net.Receive(ENL.Saver.netstr,function(_,ply)
-    local data = net.ReadTable()
     
+    local data = net.ReadTable()
+
     if !(isvector(data.wpos) or isvector(data.lpos))
     or !isangle(data.wang) or !isstring(data.mdl) then return end
     if !hook.Run('PlayerSpawnProp',ply,data.mdl) then return end
