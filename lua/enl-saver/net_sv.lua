@@ -32,6 +32,7 @@ net.Receive(ENL.Saver.netstr,function(_,ply)
     if prop.CPPISetOwner then
         prop:CPPISetOwner(ply)
     end
+    
     prop.SID = ply.SID
     prop:Spawn()
     if NCfg:Get('Saver','Create Indestructible Items') then
