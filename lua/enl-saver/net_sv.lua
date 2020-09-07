@@ -2,6 +2,7 @@ local firstEnts = {}
 
 net.Receive(ENL.Saver.netstr,function(_,ply)
     local data = net.ReadTable()
+    
     if !(isvector(data.wpos) or isvector(data.lpos))
     or !isangle(data.wang) or !isstring(data.mdl) then return end
     if !hook.Run('PlayerSpawnProp',ply,data.mdl) then return end
@@ -65,7 +66,7 @@ net.Receive(ENL.Saver.netstr,function(_,ply)
     end
 
     local color = (data.col and Color(data.col.r,data.col.g,data.col.b,data.col.a))
-    
+
     if IsColor(color) then prop:SetColor(color) end
 
     if data.firstEnt then
