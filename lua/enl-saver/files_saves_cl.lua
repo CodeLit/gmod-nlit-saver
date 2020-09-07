@@ -1,47 +1,49 @@
+-- [do not obfuscate]
+
 local saver = ENL.Saver
 
 saver.savePath = saver.dataDir..'/saves.txt'
 
 function saver:GetSaves()
-    return NStr:FromJson(file.Read(saver.savePath, 'DATA') or '') or {}
+    return NStr:FromJson(file.Read(self.savePath, 'DATA') or '') or {}
 end
 
 function saver:GetSave(name)
-    local saves = saver:GetSaves()
+    local saves = self:GetSaves()
     return saves[name] or nil
 end
 
 function saver:GetSelectedSave()
     local sel = self.savesList:GetSelected()
     if !sel or !sel[1] then return end
-    return saver:GetSave(sel[1]:GetColumnText(1))
+    return self:GetSave(sel[1]:GetColumnText(1))
 end
 
 function saver:WriteSaveData(tbl)
-    return file.Write(saver.savePath, NStr:ToJson(tbl))
+    return file.Write(self.savePath, NStr:ToJson(tbl))
 end
 
 function saver:SaveExists(saveName)
-    return tobool(saver:GetSave(saveName))
+    return tobool(self:GetSave(saveName))
 end
 
 function saver:RemoveSave(saveName)
-    local data = saver:GetSaves()
+    local data = self:GetSaves()
     data[saveName] = nil
-    saver:WriteSaveData(data)
+    self:WriteSaveData(data)
 end
 
 function saver:RenameSave(old,new)
-    local data = saver:GetSaves()
+    local data = self:GetSaves()
     data[new] = data[old]
     data[old] = nil
-    saver:WriteSaveData(data)
+    self:WriteSaveData(data)
 end
 
 function saver:SaveEnts(saveName)
-    local fl = saver:GetSaves()
-    if !file.IsDir(saver.dataDir,'DATA') then
-        file.CreateDir(saver.dataDir)
+    local fl = self:GetSaves()
+    if !file.IsDir(self.dataDir,'DATA') then
+        file.CreateDir(self.dataDir)
     end
     local function Write()
         if table.Count(self.Ents) <= 0 then return end
@@ -79,7 +81,7 @@ function saver:SaveEnts(saveName)
         end
         table.remove(tbl,rmID)
         fl[saveName] = tbl
-        file.Write(saver.savePath,util.TableToJSON(fl))
+        file.Write(self.savePath,util.TableToJSON(fl))
     end
   
     if fl[saveName] then
