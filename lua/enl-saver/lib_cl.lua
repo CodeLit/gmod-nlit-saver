@@ -18,7 +18,7 @@ local updTimer = 'enl-saver-update-cl-props'
 
 function saver:SetClientProps()
   local ply = LocalPlayer()
-  if self.previewCvar:GetBool() then
+  if saver.previewCvar:GetBool() then
     timer.Create(updTimer, 0, 0, function()
       local tbl = saver:GetSelectedSave() or {}
       local firstEnt
@@ -79,14 +79,14 @@ function saver:SpawnEnts(tbl)
   end
   if saver.InProgress then return end
   saver.InProgress = true
-  timer.Create('NL Duplicator Progress Timer',(self:GetSpawnDelay()*table.Count(tbl)),1,function()
+  timer.Create('NL Duplicator Progress Timer',(saver:GetSpawnDelay()*table.Count(tbl)),1,function()
     saver.LastSpawn = CurTime()
     saver.InProgress = nil
     saver.Abort = nil
   end)
-  local useWPos = self.wPosCvar:GetBool()
+  local useWPos = saver.wPosCvar:GetBool()
   for i,data in pairs(tbl) do
-    timer.Simple(self:GetSpawnDelay()*(i-1),function()
+    timer.Simple(saver:GetSpawnDelay()*(i-1),function()
       if saver.Abort then return end
       net.Start(saver.netstr)
       if !useWPos then data.wpos = nil end
