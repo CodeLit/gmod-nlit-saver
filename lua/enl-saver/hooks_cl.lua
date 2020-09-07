@@ -40,4 +40,3 @@ hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
     halo.Add(haloEnts, NC:White(), 1, 1, 15, true, true)
   end
 end)
-
