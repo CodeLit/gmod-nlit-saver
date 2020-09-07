@@ -1,3 +1,5 @@
+-- [do not obfuscate]
+
 local saver = ENL.Saver
 
 hook.Add('HUDPaint','ENL Dulpicator Progress',function()
@@ -15,6 +17,7 @@ hook.Add('HUDPaint','ENL Dulpicator Progress',function()
     saver.Abort = true
   end
 end)
+
 
 hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
   if !table.IsEmpty(saver.Ents) then
