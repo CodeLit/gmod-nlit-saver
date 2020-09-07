@@ -1,3 +1,5 @@
+-- [do not obfuscate]
+
 ENL = ENL or {}
 ENL.Saver = ENL.Saver or {}
 ENL.Saver.netstr = 'ENL Saver'
