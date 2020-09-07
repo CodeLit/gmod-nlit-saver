@@ -72,6 +72,7 @@ end
 function saver:SpawnEnts(tbl)
   local coolDownTimeLeft = math.Round((saver.LastSpawn +
     NCfg:Get('Saver','Save Cooldown'))-CurTime(),1)
+    
   if coolDownTimeLeft >= 0 then
     LocalPlayer():Notify(l('Saver cannot work too often')..'.'..l('Time left')
       ..': '..coolDownTimeLeft..' '..l('sec.'))
@@ -79,7 +80,7 @@ function saver:SpawnEnts(tbl)
   end
   if saver.InProgress then return end
   saver.InProgress = true
-  
+
   timer.Create('NL Duplicator Progress Timer',(saver:GetSpawnDelay()*table.Count(tbl)),1,function()
     saver.LastSpawn = CurTime()
     saver.InProgress = nil
