@@ -79,11 +79,13 @@ function saver:SpawnEnts(tbl)
   end
   if saver.InProgress then return end
   saver.InProgress = true
+  
   timer.Create('NL Duplicator Progress Timer',(saver:GetSpawnDelay()*table.Count(tbl)),1,function()
     saver.LastSpawn = CurTime()
     saver.InProgress = nil
     saver.Abort = nil
   end)
+
   local useWPos = saver.wPosCvar:GetBool()
   for i,data in pairs(tbl) do
     timer.Simple(saver:GetSpawnDelay()*(i-1),function()
