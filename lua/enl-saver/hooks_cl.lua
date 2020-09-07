@@ -18,7 +18,6 @@ hook.Add('HUDPaint','ENL Dulpicator Progress',function()
   end
 end)
 
-
 hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
   if !table.IsEmpty(saver.Ents) then
     local wep, tool = LocalPlayer():GetActiveWeapon(), LocalPlayer():GetTool()
