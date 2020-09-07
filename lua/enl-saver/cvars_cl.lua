@@ -1,3 +1,5 @@
+-- [do not obfuscate]
+
 local saver = ENL.Saver
 
 saver.previewCvar = CreateClientConVar('enl_saver_preview','0')

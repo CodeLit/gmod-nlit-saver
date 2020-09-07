@@ -1,5 +1,3 @@
--- [do not obfuscate]
-
 local saver = ENL.Saver
 
 hook.Add('HUDPaint','ENL Dulpicator Progress',function()
