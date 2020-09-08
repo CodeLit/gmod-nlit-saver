@@ -20,8 +20,9 @@ function ENL.Saver:CanProceedEnt(ply,ent)
     filter = function(e) if e.SID != ply.SID then return true end end
   })
   -- if tr.Hit then Note('Предмет вне поля видимости') return false end
-  for _,ent in pairs(ents.FindInSphere(ent:GetPos(),ent:BoundingRadius() or 50)) do
-    if ent:IsPlayer() then ply:Notify(l('Player is blocking item spawn',ply:GetLang())..'!') return false end
+  if NEnts:IsStuckingPly(ent) then
+    ply:Notify(l('Player is blocking item spawn',ply:GetLang())..'!')
+    return false
   end
   
   return true
