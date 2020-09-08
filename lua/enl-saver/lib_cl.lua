@@ -39,7 +39,12 @@ function saver:SetClientProps()
             local ang = ply:EyeAngles()
             ang:RotateAroundAxis(ply:GetRight(),-90)
             cliProp:SetAngles(Angle(0,ang.y,0))
-            -- cliProp:SetPos(cliProp:GetPos()+Vector(0, 0, cliProp:GetModelRadius()))
+            ang = cliProp:GetAngles()
+            ang.r = data.wang.r
+            cliProp:SetAngles(ang)
+            if data.startH then
+              cliProp:SetPos(cliProp:GetPos()+Vector(0, 0, data.startH))
+            end
           end
           firstEnt = firstEnt or cliProp
         end

@@ -55,12 +55,17 @@ function saver:SaveEnts(saveName)
             instbl.wpos = ent:GetPos()
             instbl.wang = ent:GetAngles()
             instbl.mat = ent:GetMaterial()
+            -- Даём трасер в пол, и записываем высоту
+            local tr = util.QuickTrace(ent:GetPos(),
+                ent:GetPos()-Vector(0, 0, 5000), ent)
+            instbl.startH = tr.HitPos:Distance(ent:GetPos())
             local clr = ent:GetColor()
             if clr != Color(255,255,255) then instbl.col = clr end
             table.insert(tbl,instbl)
         end
         local rmID
-        for i,data in pairs(tbl) do -- записать первый элемент как самый низкий по Z
+        for i,data in pairs(tbl) do
+            -- записать первый элемент как самый низкий по Z
             if i != 1 then
                 if !tbl[1] then
                     tbl[1] = data
@@ -73,7 +78,8 @@ function saver:SaveEnts(saveName)
         end
         for i,data in pairs(tbl) do
             if i == 1 then
-                data.lpos = data.wpos data.lang = data.wang
+                data.lpos = data.wpos
+                data.lang = data.wang
             else
                 data.lpos = tbl[1].ent:WorldToLocal(data.wpos)
                 data.lang = tbl[1].ent:WorldToLocalAngles(data.wang)

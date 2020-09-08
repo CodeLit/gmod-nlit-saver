@@ -52,8 +52,11 @@ net.Receive(ENL.Saver.netstr,function(_,ply)
     local phys = prop:GetPhysicsObject()
     if phys then
         if data.firstEnt and !data.useWPos then
-        local mins,maxs = phys:GetAABB()
-        prop:SetPos(prop:GetPos()+Vector(0,0,maxs.z+10))
+            local mins,maxs = phys:GetAABB()
+            prop:SetPos(prop:GetPos()+Vector(0,0,maxs.z+10))
+            local ang = prop:GetAngles()
+            ang.r = data.wang.r
+            prop:SetAngles(ang)
         end
         phys:EnableMotion(!tobool(ply:GetInfo(ENL.Saver.freezeCvarName)))
     end
@@ -76,6 +79,9 @@ net.Receive(ENL.Saver.netstr,function(_,ply)
     if data.firstEnt then
         firstEnts[ply:SteamID()] = prop
         prop:DropToFloor()
+        if data.startH then
+            prop:SetPos(prop:GetPos()+Vector(0, 0, data.startH))
+        end
     end
 
 end)
