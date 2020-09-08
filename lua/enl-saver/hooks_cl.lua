@@ -33,10 +33,16 @@ hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
   end
 
   if !table.IsEmpty(saver.ClientProps) then
-    local haloEnts = {}
+    local haloWhiteEnts = {}
+    local haloRedEnts = {}
     for _, ent in pairs(saver.ClientProps) do
-      table.insert(haloEnts, ent)
+      if ent:GetNoDraw() then
+        table.insert(haloRedEnts, ent)
+      else
+        table.insert(haloWhiteEnts, ent)
+      end
     end
-    halo.Add(haloEnts, NC:White(), 1, 1, 15, true, true)
+    halo.Add(haloWhiteEnts, NC:White(), 1, 1, 15, true, true)
+    halo.Add(haloRedEnts, NC:Red(), 1, 1, 15, true, true)
   end
 end)

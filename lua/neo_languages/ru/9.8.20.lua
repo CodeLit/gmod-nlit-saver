@@ -35,4 +35,5 @@ NLang:AddTranslation('ru',{
     Preview = 'Предпросмотр',
     ['Max props'] = 'Макс. пропов',
     Admins = 'Админы',
+    ['The item is not in your view area'] = 'Предмет вне поля твоей видимости',
 })
