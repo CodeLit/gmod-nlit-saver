@@ -19,11 +19,10 @@ hook.Add('HUDPaint','ENL Dulpicator Progress',function()
 end)
 
 hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
+
+  if !saver:IsPlyHolding(LocalPlayer()) then return end
+
   if !table.IsEmpty(saver.Ents) then
-    local wep, tool = LocalPlayer():GetActiveWeapon(), LocalPlayer():GetTool()
-    if !IsValid(wep) or wep:GetClass() != 'gmod_tool'
-      or tool.Mode != 'enl_saver' then return end
-  
     local haloEnts = {}
     for ent, bool in pairs(saver.Ents) do
       if bool and IsValid(ent) then table.insert(haloEnts, ent)

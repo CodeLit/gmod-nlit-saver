@@ -6,6 +6,12 @@ ENL.Saver.netstr = 'ENL Saver'
 ENL.Saver.freezeCvarName = 'enl_saver_freeze'
 ENL.Saver.dataDir = 'enl_saver'
 
+function ENL.Saver:IsPlyHolding(ply)
+  local act = ply:GetActiveWeapon()
+  local tool = ply:GetTool()
+  return IsValid(act) and act:GetClass() == 'gmod_tool' and tool.Mode == 'enl_saver'
+end
+
 function ENL.Saver:CanProceedEnt(ply,ent,bDontNotify)
   if !IsValid(ply) or !IsValid(ent) then return end
   local function Notify(ply,message)

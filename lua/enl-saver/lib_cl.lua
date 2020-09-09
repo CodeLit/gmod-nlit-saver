@@ -18,6 +18,7 @@ local updTimer = 'enl-saver-update-cl-props'
 
 function saver:SetClientProps()
   local ply = LocalPlayer()
+  self:ClearClientProps()
   if self.previewCvar:GetBool() then
     timer.Create(updTimer, 0, 0, function()
       local tbl = self:GetSelectedSave() or {}
@@ -41,6 +42,7 @@ function saver:SetClientProps()
             cliProp:SetAngles(Angle(0,ang.y,0))
             ang = cliProp:GetAngles()
             ang.r = data.wang.r
+            ang.p = data.wang.p
             cliProp:SetAngles(ang)
             if data.startH then
               cliProp:SetPos(cliProp:GetPos()+Vector(0, 0, data.startH))
@@ -56,22 +58,23 @@ function saver:SetClientProps()
           cliProp:Spawn()
           self.ClientProps[i] = cliProp
         end
-        cliProp:SetNoDraw(!saver:CanProceedEnt(ply,cliProp,true))
+        cliProp:SetNoDraw(!saver:CanProceedEnt(ply,cliProp,true) or !saver:IsPlyHolding(LocalPlayer()))
       end
     end)
   else
-    if !table.IsEmpty(self.ClientProps) then
-      for _, ent in pairs(self.ClientProps) do
-        if IsValid(ent) then
-          ent:Remove()
-        else
-          self.ClientProps = {}
-        end
-      end
-      self.ClientProps = {}
-      timer.Remove(updTimer)
-    end
+    timer.Remove(updTimer)
   end 
+end
+
+function saver:ClearClientProps()
+  if !table.IsEmpty(self.ClientProps) then
+    for i, ent in pairs(self.ClientProps) do
+      if IsValid(ent) then
+        ent:Remove()
+      end
+      self.ClientProps[i] = nil
+    end
+  end
 end
 
 function saver:SpawnEnts(tbl)

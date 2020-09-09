@@ -70,6 +70,9 @@ function saver:CreateUI(toolObj)
   saves:DockMargin(0, 10, 0, 0)
   saves:SetMultiSelect(false)
   saves:AddColumn(l('Savings'))
+  saves.OnRowSelected = function(rowIndex, row)
+    saver:ClearClientProps()
+  end
   ENL.Saver.savesList = saves
 
   function saves:Upd()
