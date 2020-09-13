@@ -9,7 +9,8 @@ ENL.Saver.dataDir = 'enl_saver'
 function ENL.Saver:IsPlyHolding(ply)
   local act = ply:GetActiveWeapon()
   local tool = ply:GetTool()
-  return IsValid(act) and act:GetClass() == 'gmod_tool' and tool.Mode == 'enl_saver'
+  return (IsValid(act) and act:GetClass() == 'gmod_tool' and tool
+    and tool.Mode == 'enl_saver')
 end
 
 function ENL.Saver:CanProceedEnt(ply,ent,bDontNotify)

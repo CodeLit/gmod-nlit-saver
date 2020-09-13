@@ -20,7 +20,7 @@ function saver:SetClientProps()
   local ply = LocalPlayer()
   self:ClearClientProps()
   if self.previewCvar:GetBool() then
-    timer.Create(updTimer, 0, 0, function()
+    timer.Create(updTimer, 0.033, 0, function()
       local tbl = self:GetSelectedSave() or {}
       local firstEnt
       for i, data in pairs(tbl or {}) do
