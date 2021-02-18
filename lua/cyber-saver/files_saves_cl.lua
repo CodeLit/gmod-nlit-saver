@@ -1,11 +1,13 @@
 -- [do not obfuscate]
 
-local saver = ENL.Saver
+local saver = CW.Saver
 
 saver.savePath = saver.dataDir..'/saves.txt'
 
+local Str = CW:Lib('strings')
+
 function saver:GetSaves()
-    return NStr:FromJson(file.Read(self.savePath, 'DATA') or '') or {}
+    return Str:FromJson(file.Read(self.savePath, 'DATA') or '') or {}
 end
 
 function saver:GetSave(name)
@@ -20,7 +22,7 @@ function saver:GetSelectedSave()
 end
 
 function saver:WriteSaveData(tbl)
-    return file.Write(self.savePath, NStr:ToJson(tbl))
+    return file.Write(self.savePath, Str:ToJson(tbl))
 end
 
 function saver:SaveExists(saveName)

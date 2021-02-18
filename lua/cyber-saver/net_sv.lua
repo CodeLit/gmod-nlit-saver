@@ -1,6 +1,6 @@
 local firstEnts = {}
 
-net.Receive(ENL.Saver.netstr,function(_,ply)
+net.Receive(CW.Saver.netstr,function(_,ply)
 
     local data = net.ReadTable()
     if !(isvector(data.wpos) or isvector(data.lpos))
@@ -28,7 +28,7 @@ net.Receive(ENL.Saver.netstr,function(_,ply)
 
     prop:SetModel(data.mdl)
     
-    if !ENL.Saver:CanProceedEnt(ply,prop) then prop:Remove() return end
+    if !CW.Saver:CanProceedEnt(ply,prop) then prop:Remove() return end
 
     if prop.CPPISetOwner then
         prop:CPPISetOwner(ply)
@@ -58,7 +58,7 @@ net.Receive(ENL.Saver.netstr,function(_,ply)
             ang.r = data.wang.r
             prop:SetAngles(ang)
         end
-        phys:EnableMotion(!tobool(ply:GetInfo(ENL.Saver.freezeCvarName)))
+        phys:EnableMotion(!tobool(ply:GetInfo(CW.Saver.freezeCvarName)))
     end
 
     if APA and APA.InitGhost then

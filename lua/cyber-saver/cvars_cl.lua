@@ -1,8 +1,8 @@
 -- [do not obfuscate]
 
-local saver = ENL.Saver
+local saver = CW.Saver
 
-saver.previewCvar = CreateClientConVar('enl_saver_preview','0')
+saver.previewCvar = CreateClientConVar(CW.Saver.tool..'_preview','0')
 
 cvars.AddChangeCallback(saver.previewCvar:GetName(), function(cName, old, new)
   saver:SetClientProps()

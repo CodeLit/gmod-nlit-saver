@@ -1,8 +1,10 @@
 -- [do not obfuscate]
 
-local saver = ENL.Saver
+local saver = CW.Saver
 
 local freezeCvar = CreateClientConVar(saver.freezeCvarName,'0',true,true)
+
+local l = CW:Lib('translator')
 
 function saver:CreateUI(toolObj)
 
@@ -12,12 +14,11 @@ function saver:CreateUI(toolObj)
     pnl:Dock(TOP)
     pnl:SetText('')
     pnl:DockMargin(20,10,20,0)
-    
     btn:SetParent(pnl)
     btn:Dock(FILL)
   end
 
-  toolObj:AddControl('Header', {Text = '#Tool.enl_saver.name', Description = '#Tool.enl_saver.desc'})
+  toolObj:AddControl('Header', {Text = '#Tool.'..CW.Saver.tool..'.name', Description = '#Tool.'..CW.Saver.tool..'.desc'})
 
   local pnl = toolObj:Add('DPanel')
   pnl:SetTall(30)
@@ -48,9 +49,9 @@ function saver:CreateUI(toolObj)
 
   edit:Upd()
 
-  AddButton(NGUI:AcceptButton('Save items', function()
+  AddButton(NGUI:Accept('Save items', function()
     saver:SaveEnts(edit:GetText())
-    ENL.Saver.savesList:Upd()
+    CW.Saver.savesList:Upd()
     edit:Upd()
   end))
 
@@ -73,7 +74,7 @@ function saver:CreateUI(toolObj)
   saves.OnRowSelected = function(rowIndex, row)
     saver:ClearClientProps()
   end
-  ENL.Saver.savesList = saves
+  CW.Saver.savesList = saves
 
   function saves:Upd()
     self:Clear()
@@ -110,7 +111,7 @@ function saver:CreateUI(toolObj)
     end
   end))
 
-  AddButton(NGUI:DeclineButton('Remove saving', function()
+  AddButton(NGUI:Decline('Remove saving', function()
       local sel = saves:GetSelected()[1]
       if !sel then return end
       local saveName = sel:GetColumnText(1)

@@ -1,6 +1,6 @@
 -- [do not obfuscate]
 
-local saver = ENL.Saver
+local saver = CW.Saver
 
 hook.Add('HUDPaint','ENL Dulpicator Progress',function()
   if !saver.InProgress or saver.Abort then return end

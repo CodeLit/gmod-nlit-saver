@@ -1,10 +1,10 @@
 -- [do not obfuscate]
 
-local saver = ENL.Saver
+local saver = CW.Saver
 
 saver.Ents = saver.Ents or {}
 saver.ClientProps = saver.ClientProps or {}
-saver.wPosCvar = CreateClientConVar('enl_saver_worldposspawns','0', false)
+saver.wPosCvar = CreateClientConVar(CW.Saver.tool..'_worldposspawns','0', false)
 
 function saver:GetSpawnDelay()
   local addTime = NCfg:Get('Saver','Delay Between Single Propspawn')

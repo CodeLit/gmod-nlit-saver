@@ -1,9 +1,9 @@
 TOOL.Category = 'Construction'
-TOOL.Name = '#tool.enl_saver.name'
+TOOL.Name = '#tool.'..CW.Saver.tool..'.name'
 
 if CLIENT then
 
-  local saver = ENL.Saver
+  local saver = CW.Saver
 
   saver.LastSpawn = saver.LastSpawn or CurTime()
 

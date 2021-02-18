@@ -1,19 +1,20 @@
 -- [do not obfuscate]
 
-ENL = ENL or {}
-ENL.Saver = ENL.Saver or {}
-ENL.Saver.netstr = 'ENL Saver'
-ENL.Saver.freezeCvarName = 'enl_saver_freeze'
-ENL.Saver.dataDir = 'enl_saver'
+CW = CW or {}
+CW.Saver = CW.Saver or {}
+CW.Saver.tool = 'cyber_saver'
+CW.Saver.netstr = 'Cyber Saver'
+CW.Saver.freezeCvarName = CW.Saver.tool..'_freeze'
+CW.Saver.dataDir = CW.Saver.tool
 
-function ENL.Saver:IsPlyHolding(ply)
+function CW.Saver:IsPlyHolding(ply)
   local act = ply:GetActiveWeapon()
   local tool = ply:GetTool()
   return (IsValid(act) and act:GetClass() == 'gmod_tool' and tool
-    and tool.Mode == 'enl_saver')
+    and tool.Mode == CW.Saver.tool)
 end
 
-function ENL.Saver:CanProceedEnt(ply,ent,bDontNotify)
+function CW.Saver:CanProceedEnt(ply,ent,bDontNotify)
   if !IsValid(ply) or !IsValid(ent) then return end
   local function Notify(ply,message)
     if !bDontNotify then
@@ -27,7 +28,7 @@ function ENL.Saver:CanProceedEnt(ply,ent,bDontNotify)
     Notify(ply,l('The item must be a prop',ply:GetLang())..'!')
     return
   end
-  
+
   if ply:GetPos():Distance(ent:GetPos()) > NCfg:Get('Saver','Max. Items Spawn Distance') then
     Notify(ply,l('There is too far for the object',ply:GetLang())..'!')
     return false

@@ -1,4 +1,6 @@
-NLang:AddTranslation('ru',{
+local lang = CW:Lib('language')
+
+lang:AddTranslation('ru',{
     ['Save items'] = 'Сохранить предметы',
     ['Classes To Save'] = 'Сохраняемые классы',
     ['Max. Items Spawn Distance'] = 'Макс. расстояние спавна предметов',
