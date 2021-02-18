@@ -7,6 +7,9 @@ CW.Saver.netstr = 'Cyber Saver'
 CW.Saver.freezeCvarName = CW.Saver.tool..'_freeze'
 CW.Saver.dataDir = CW.Saver.tool
 
+local Ents = CW:Lib('ents')
+local l = CW:Lib('translator')
+
 function CW.Saver:IsPlyHolding(ply)
   local act = ply:GetActiveWeapon()
   local tool = ply:GetTool()
@@ -43,7 +46,7 @@ function CW.Saver:CanProceedEnt(ply,ent,bDontNotify)
     return false
   end
 
-  if NEnts:IsStuckingPly(ent) then
+  if Ents:IsStuckingPly(ent) then
     Notify(ply,l('Player is blocking item spawn',ply:GetLang())..'!')
     return false
   end

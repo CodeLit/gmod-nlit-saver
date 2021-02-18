@@ -48,9 +48,9 @@ function saver:SaveEnts(saveName)
         file.CreateDir(self.dataDir)
     end
     local function Write()
-        if table.Count(self.Ents) <= 0 then return end
+        if table.Count(CW.Saver.Ents) <= 0 then return end
         local tbl = {[1]=false}
-        for ent,_ in pairs(self.Ents) do
+        for ent,_ in pairs(CW.Saver.Ents) do
             local instbl = {mdl = ent:GetModel()}
             instbl.ent = ent
             instbl.class = ent:GetClass()
@@ -58,9 +58,13 @@ function saver:SaveEnts(saveName)
             instbl.wang = ent:GetAngles()
             instbl.mat = ent:GetMaterial()
             -- Даём трасер в пол, и записываем высоту
-            local tr = util.QuickTrace(ent:GetPos(),
-                ent:GetPos()-Vector(0, 0, 5000), ent)
+
+            
+            local tr = util.QuickTrace(ent:WorldSpaceCenter(),
+                ent:WorldSpaceCenter()-Vector(0, 0, 3000), ent)
             instbl.startH = tr.HitPos:Distance(ent:GetPos())
+
+            cwp(instbl.startH)
             local clr = ent:GetColor()
             if clr != Color(255,255,255) then instbl.col = clr end
             table.insert(tbl,instbl)

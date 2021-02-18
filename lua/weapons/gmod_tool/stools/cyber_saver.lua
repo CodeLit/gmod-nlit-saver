@@ -1,6 +1,8 @@
 TOOL.Category = 'Construction'
 TOOL.Name = '#tool.'..CW.Saver.tool..'.name'
 
+local l = CW:Lib('translator')
+
 if CLIENT then
 
   local saver = CW.Saver

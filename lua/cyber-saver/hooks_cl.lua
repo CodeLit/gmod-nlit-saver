@@ -2,6 +2,9 @@
 
 local saver = CW.Saver
 
+local l = CW:Lib('translator')
+local CWC = CW:Lib('colors')
+
 hook.Add('HUDPaint','ENL Dulpicator Progress',function()
   if !saver.InProgress or saver.Abort then return end
   local text = l('Saver is creating objects')..'...'
@@ -41,7 +44,7 @@ hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
         table.insert(haloWhiteEnts, ent)
       end
     end
-    halo.Add(haloWhiteEnts, NC:White(), 1, 1, 15, true, true)
-    halo.Add(haloRedEnts, NC:Red(), 1, 1, 15, true, true)
+    halo.Add(haloWhiteEnts, CWC:White(), 1, 1, 15, true, true)
+    halo.Add(haloRedEnts, CWC:Red(), 1, 1, 15, true, true)
   end
 end)

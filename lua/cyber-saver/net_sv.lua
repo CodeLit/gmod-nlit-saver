@@ -4,10 +4,13 @@ net.Receive(CW.Saver.netstr,function(_,ply)
 
     local data = net.ReadTable()
     if !(isvector(data.wpos) or isvector(data.lpos))
-    
+
     or !isangle(data.wang) or !isstring(data.mdl) then return end
     if !hook.Run('PlayerSpawnProp',ply,data.mdl) then return end
+
     local prop = ents.Create(data.class)
+
+    -- Первое размещение
     if data.useWPos then
         prop:SetPos(data.wpos)
         prop:SetAngles(data.wang)
@@ -17,7 +20,12 @@ net.Receive(CW.Saver.netstr,function(_,ply)
         prop:SetAngles(Angle(0,ang.y,0))
         if data.firstEnt then
             local trace = ply:GetEyeTrace()
-            prop:SetPos(trace.HitPos)
+            local spawnPos = trace.HitPos
+            spawnPos.z = spawnPos.z + data.startH/2+5
+            prop:SetPos(spawnPos)
+            local a = prop:GetAngles()
+            a.r = data.wang.r
+            prop:SetAngles(a)
         else
             local fent = firstEnts[ply:SteamID()]
             if !IsValid(fent) then return end
@@ -27,16 +35,27 @@ net.Receive(CW.Saver.netstr,function(_,ply)
     end
 
     prop:SetModel(data.mdl)
-    
+    prop:Spawn()
+
+    -- Фризинг
+    local phys = prop:GetPhysicsObject()
+    if phys then
+        phys:EnableMotion(!tobool(ply:GetInfo(CW.Saver.freezeCvarName)))
+    end
+
     if !CW.Saver:CanProceedEnt(ply,prop) then prop:Remove() return end
+    
+    // timer.Simple(0, function ()
+    //     prop:DropToFloor() // Кидаем на пол предметы с плохой физ. моделью
+    // end)
+    
 
     if prop.CPPISetOwner then
         prop:CPPISetOwner(ply)
     end
 
     prop.SID = ply.SID
-    prop:Spawn()
-    
+
     if NCfg:Get('Saver','Create Indestructible Items') then
         prop:SetVar('Unbreakable',true)
         prop:Fire('SetDamageFilter','FilterDamage',0)
@@ -48,18 +67,6 @@ net.Receive(CW.Saver.netstr,function(_,ply)
     undo.AddEntity(prop)
     undo.SetPlayer(ply)
     undo.Finish()
-
-    local phys = prop:GetPhysicsObject()
-    if phys then
-        if data.firstEnt and !data.useWPos then
-            local mins,maxs = phys:GetAABB()
-            prop:SetPos(prop:GetPos()+Vector(0,0,maxs.z+10))
-            local ang = prop:GetAngles()
-            ang.r = data.wang.r
-            prop:SetAngles(ang)
-        end
-        phys:EnableMotion(!tobool(ply:GetInfo(CW.Saver.freezeCvarName)))
-    end
 
     if APA and APA.InitGhost then
         timer.Simple(1,function()
@@ -78,10 +85,6 @@ net.Receive(CW.Saver.netstr,function(_,ply)
 
     if data.firstEnt then
         firstEnts[ply:SteamID()] = prop
-        prop:DropToFloor()
-        if data.startH then
-            prop:SetPos(prop:GetPos()+Vector(0, 0, data.startH))
-        end
     end
 
 end)

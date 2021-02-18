@@ -2,6 +2,8 @@
 
 local saver = CW.Saver
 
+local l = CW:Lib('translator')
+
 saver.Ents = saver.Ents or {}
 saver.ClientProps = saver.ClientProps or {}
 saver.wPosCvar = CreateClientConVar(CW.Saver.tool..'_worldposspawns','0', false)
@@ -14,7 +16,7 @@ function saver:GetSpawnDelay()
   return addTime
 end
 
-local updTimer = 'enl-saver-update-cl-props'
+local updTimer = 'CW-saver-update-cl-props'
 
 function saver:SetClientProps()
   local ply = LocalPlayer()
@@ -83,7 +85,7 @@ function saver:SpawnEnts(tbl)
 
   if coolDownTimeLeft >= 0 then
     LocalPlayer():Notify(l('Saver cannot work too often')..'.'..l('Time left')
-      ..': '..coolDownTimeLeft..' '..l('sec.'))
+      ..': '..coolDownTimeLeft..' '..l('sec')..'.')
     return
   end
   if self.InProgress then return end
