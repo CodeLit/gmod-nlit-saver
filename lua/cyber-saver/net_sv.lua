@@ -17,15 +17,19 @@ net.Receive(CW.Saver.netstr,function(_,ply)
     else
         local ang = ply:EyeAngles()
         ang:RotateAroundAxis(ply:GetRight(),-90)
-        prop:SetAngles(Angle(0,ang.y,0))
         if data.firstEnt then
             local trace = ply:GetEyeTrace()
             local spawnPos = trace.HitPos
-            spawnPos.z = spawnPos.z + data.startH/2+5
+            spawnPos.z = spawnPos.z + data.startH
             prop:SetPos(spawnPos)
             local a = prop:GetAngles()
             a.r = data.wang.r
+            a.y = ang.y
             prop:SetAngles(a)
+            -- timer.Simple(0, function ()
+            --     if !IsValid(prop) then return end
+            --     prop:DropToFloor() // Кидаем на пол предметы с плохой физ. моделью
+            -- end)
         else
             local fent = firstEnts[ply:SteamID()]
             if !IsValid(fent) then return end
@@ -45,11 +49,6 @@ net.Receive(CW.Saver.netstr,function(_,ply)
 
     if !CW.Saver:CanProceedEnt(ply,prop) then prop:Remove() return end
     
-    // timer.Simple(0, function ()
-    //     prop:DropToFloor() // Кидаем на пол предметы с плохой физ. моделью
-    // end)
-    
-
     if prop.CPPISetOwner then
         prop:CPPISetOwner(ply)
     end

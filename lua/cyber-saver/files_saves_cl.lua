@@ -58,13 +58,9 @@ function saver:SaveEnts(saveName)
             instbl.wang = ent:GetAngles()
             instbl.mat = ent:GetMaterial()
             -- Даём трасер в пол, и записываем высоту
-
-            
-            local tr = util.QuickTrace(ent:WorldSpaceCenter(),
+            local tr = util.QuickTrace(ent:GetPos(),
                 ent:WorldSpaceCenter()-Vector(0, 0, 3000), ent)
-            instbl.startH = tr.HitPos:Distance(ent:GetPos())
-
-            cwp(instbl.startH)
+            instbl.startH = tr.StartPos.z - tr.HitPos.z
             local clr = ent:GetColor()
             if clr != Color(255,255,255) then instbl.col = clr end
             table.insert(tbl,instbl)

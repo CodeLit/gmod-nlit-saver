@@ -21,7 +21,7 @@ local updTimer = 'CW-saver-update-cl-props'
 function saver:SetClientProps()
   local ply = LocalPlayer()
   self:ClearClientProps()
-  if self.previewCvar:GetBool() then
+  if self.previewCvar:GetBool() or true then
     timer.Create(updTimer, 0.033, 0, function()
       local tbl = self:GetSelectedSave() or {}
       local firstEnt
@@ -38,17 +38,13 @@ function saver:SetClientProps()
             cliProp:SetAngles(firstEnt:LocalToWorldAngles(data.lang))
           else
             local tr = ply:GetEyeTrace()
-            cliProp:SetPos(tr.HitPos)
+            cliProp:SetPos(tr.HitPos + Vector(0, 0, data.startH or 0))
             local ang = ply:EyeAngles()
             ang:RotateAroundAxis(ply:GetRight(),-90)
-            cliProp:SetAngles(Angle(0,ang.y,0))
-            ang = cliProp:GetAngles()
-            ang.r = data.wang.r
             ang.p = data.wang.p
+            -- ang.y = data.wang.y
+            ang.r = data.wang.r
             cliProp:SetAngles(ang)
-            if data.startH then
-              cliProp:SetPos(cliProp:GetPos()+Vector(0, 0, data.startH))
-            end
           end
           firstEnt = firstEnt or cliProp
         end
