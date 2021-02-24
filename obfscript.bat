@@ -1,0 +1,1 @@
+py ../obfuscator/run.py %~dp0/lua/cyber-saver

@@ -1,12 +1,8 @@
--- [do not obfuscate]
-
-local saver = CW.Saver
-
 local l = CW:Lib('translator')
 local CWC = CW:Lib('colors')
 
 hook.Add('HUDPaint','ENL Dulpicator Progress',function()
-  if !saver.InProgress or saver.Abort then return end
+  if !CWSaver.InProgress or CWSaver.Abort then return end
   local text = l('Saver is creating objects')..'...'
     ..math.Round(timer.TimeLeft('NL Duplicator Progress Timer'),1)
   local txtdata = {text=text,font='DermaLarge',pos={ScrW()-450,ScrH()/15},color=Color(255,255,255)}
@@ -16,28 +12,28 @@ hook.Add('HUDPaint','ENL Dulpicator Progress',function()
   txtdata.pos = {ScrW()-510,ScrH()/10}
   draw.Text(txtdata)
   draw.TextShadow(txtdata,2,200)
-  if saver.InProgress and LocalPlayer():KeyPressed(IN_RELOAD) then
-    saver.Abort = true
+  if CWSaver.InProgress and LocalPlayer():KeyPressed(IN_RELOAD) then
+    CWSaver.Abort = true
   end
 end)
 
 hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
 
-  if !saver:IsPlyHolding(LocalPlayer()) then return end
+  if !CWSaver:IsPlyHolding(LocalPlayer()) then return end
 
-  if !table.IsEmpty(saver.Ents) then
+  if !table.IsEmpty(CWSaver.Ents) then
     local haloEnts = {}
-    for ent, bool in pairs(saver.Ents) do
+    for ent, bool in pairs(CWSaver.Ents) do
       if bool and IsValid(ent) then table.insert(haloEnts, ent)
-      else saver.Ents[ent] = nil end
+      else CWSaver.Ents[ent] = nil end
     end
     halo.Add(haloEnts, Color( 51, 255, 51 ), 1, 1, 15, true, true)
   end
 
-  if !table.IsEmpty(saver.ClientProps) then
+  if !table.IsEmpty(CWSaver.ClientProps) then
     local haloWhiteEnts = {}
     local haloRedEnts = {}
-    for _, ent in pairs(saver.ClientProps) do
+    for _, ent in pairs(CWSaver.ClientProps) do
       if ent:GetNoDraw() then
         table.insert(haloRedEnts, ent)
       else
@@ -48,3 +44,5 @@ hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
     halo.Add(haloRedEnts, CWC:Red(), 1, 1, 15, true, true)
   end
 end)
+
+CWSaver:debug('HOOKS LOADED!')

@@ -1,14 +1,12 @@
 -- [do not obfuscate]
 
-local saver = CW.Saver
-
-local freezeCvar = CreateClientConVar(saver.freezeCvarName,'0',true,true)
+local freezeCvar = CreateClientConVar(CWSaver.freezeCvarName,'0',true,true)
 
 local l = CW:Lib('translator')
 local Buttons = CW:Lib('buttons')
 local Frames = CW:Lib('frames')
 
-function saver:CreateUI(toolObj)
+function CWSaver:CreateUI(toolObj)
   local function AddButton(btn)
     local pnl = toolObj:Add('DPanel')
     pnl:SetTall(30)
@@ -18,7 +16,7 @@ function saver:CreateUI(toolObj)
     btn:SetParent(pnl)
     btn:Dock(FILL)
   end
-  toolObj:AddControl('Header', {Text = '#Tool.'..CW.Saver.tool..'.name', Description = '#Tool.'..CW.Saver.tool..'.desc'})
+  toolObj:AddControl('Header', {Text = '#Tool.'..self.tool..'.name', Description = '#Tool.'..self.tool..'.desc'})
   local pnl = toolObj:Add('DPanel')
   pnl:SetTall(30)
   pnl:Dock(TOP)
@@ -34,7 +32,7 @@ function saver:CreateUI(toolObj)
     if string.find(txt,saveText..' ') == 1 and exp[2] then
       local num = tonumber(exp[2])
       if isnumber(num) then
-        local svs = saver:GetSaves()
+        local svs = CWSaver:GetSaves()
         while svs[saveText..' '..num] do
           num = num + 1
         end
@@ -46,19 +44,19 @@ function saver:CreateUI(toolObj)
   edit:Upd()
 
   AddButton(Buttons:Accept('Save items', function()
-    saver:SaveEnts(edit:GetText())
-    CW.Saver.savesList:Upd()
+    self:SaveEnts(edit:GetText())
+    self.savesList:Upd()
     edit:Upd()
   end))
 
   toolObj:AddControl('CheckBox', {
-    Label = l('Place with saving world positions'), Command = saver.wPosCvar:GetName()
+    Label = l('Place with saving world positions'), Command = self.wPosCvar:GetName()
   })
   toolObj:AddControl('CheckBox', {
     Label = l('Freeze Items On Spawn'), Command = freezeCvar:GetName()
   })
   toolObj:AddControl('CheckBox', {
-    Label = l('Preview'), Command = saver.previewCvar:GetName()
+    Label = l('Preview'), Command = self.previewCvar:GetName()
   })
   local saves = vgui.Create('DListView', toolObj)
   saves:SetTall(ScrH() / 3)
@@ -67,13 +65,13 @@ function saver:CreateUI(toolObj)
   saves:SetMultiSelect(false)
   saves:AddColumn(l('Savings'))
   saves.OnRowSelected = function(rowIndex, row)
-    saver:ClearClientProps()
+    self:ClearClientProps()
   end
-  CW.Saver.savesList = saves
+  self.savesList = saves
 
   function saves:Upd()
     self:Clear()
-    for s,_ in pairs(saver:GetSaves()) do
+    for s,_ in pairs(CWSaver:GetSaves()) do
       self:AddLine(s)
     end
   end
@@ -84,9 +82,9 @@ function saver:CreateUI(toolObj)
     local sel = saves:GetSelected()[1]
     if !sel then return end
     local saveName = sel:GetColumnText(1)
-    local svs = saver:GetSaves()
-    if saver:SaveExists(saveName) then
-      saver:SpawnEnts(svs[saveName])
+    local svs = self:GetSaves()
+    if self:SaveExists(saveName) then
+      self:SpawnEnts(svs[saveName])
     end
   end))
 
@@ -94,12 +92,12 @@ function saver:CreateUI(toolObj)
     local sel = saves:GetSelected()[1]
     if !sel then return end
     local saveName = sel:GetColumnText(1)
-    if saver:SaveExists(saveName) then
+    if self:SaveExists(saveName) then
       local newName = edit:GetText()
       if newName == '' or newName == saveName then return end
         Frames:AcceptDialogue(l('Rename saving')..' '..saveName
           ..' '..l('to')..' '..newName..'?', 'Yes', 'No', function()
-          saver:RenameSave(saveName,newName)
+          self:RenameSave(saveName,newName)
           saves:Upd()
           edit:Upd()
         end)
@@ -110,16 +108,16 @@ function saver:CreateUI(toolObj)
       local sel = saves:GetSelected()[1]
       if !sel then return end
       local saveName = sel:GetColumnText(1)
-      if saver:SaveExists(saveName) then
+      if self:SaveExists(saveName) then
           Frames:AcceptDialogue(l('Remove saving')..' '..saveName..'?', 'Yes', 'No', function()
-            saver:RemoveSave(saveName)
+            self:RemoveSave(saveName)
             saves:Upd()
           end)
       end
   end))
 
   AddButton(Buttons:Create('Clear selection', function()
-    saver.Ents = {}
+    self.Ents = {}
   end))
 
   if LocalPlayer():IsSuperAdmin() then
@@ -128,3 +126,5 @@ function saver:CreateUI(toolObj)
     })
   end
 end
+
+CWSaver:debug('UI LOADED!')

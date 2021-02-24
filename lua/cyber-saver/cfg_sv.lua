@@ -8,4 +8,6 @@ NCfg:Set(name,'Classes To Save',{'prop_physics'},'table')
 NCfg:Set(name,'Create Indestructible Items',true,'bool')
 -- NCfg:Set(name,'Текстовое поле 1','300','text')
 
-util.AddNetworkString(CW.Saver.netstr)
+util.AddNetworkString(CWSaver.netstr)
+
+CWSaver:debug('CFG LOADED!')

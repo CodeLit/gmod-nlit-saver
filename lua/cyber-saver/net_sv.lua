@@ -1,6 +1,6 @@
 local firstEnts = {}
 
-net.Receive(CW.Saver.netstr,function(_,ply)
+net.Receive(CWSaver.netstr,function(_,ply)
 
     local data = net.ReadTable()
     if !(isvector(data.wpos) or isvector(data.lpos))
@@ -43,11 +43,12 @@ net.Receive(CW.Saver.netstr,function(_,ply)
 
     -- Фризинг
     local phys = prop:GetPhysicsObject()
+    
     if phys then
-        phys:EnableMotion(!tobool(ply:GetInfo(CW.Saver.freezeCvarName)))
+        phys:EnableMotion(!tobool(ply:GetInfo(CWSaver.freezeCvarName)))
     end
 
-    if !CW.Saver:CanProceedEnt(ply,prop) then prop:Remove() return end
+    if !CWSaver:CanProceedEnt(ply,prop) then prop:Remove() return end
     
     if prop.CPPISetOwner then
         prop:CPPISetOwner(ply)
@@ -87,3 +88,5 @@ net.Receive(CW.Saver.netstr,function(_,ply)
     end
 
 end)
+
+CWSaver:debug('NET LOADED!')

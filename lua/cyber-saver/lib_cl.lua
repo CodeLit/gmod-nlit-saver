@@ -1,14 +1,12 @@
 -- [do not obfuscate]
 
-local saver = CW.Saver
-
 local l = CW:Lib('translator')
 
-saver.Ents = saver.Ents or {}
-saver.ClientProps = saver.ClientProps or {}
-saver.wPosCvar = CreateClientConVar(CW.Saver.tool..'_worldposspawns','0', false)
+CWSaver.Ents = CWSaver.Ents or {}
+CWSaver.ClientProps = CWSaver.ClientProps or {}
+CWSaver.wPosCvar = CreateClientConVar(CWSaver.tool..'_worldposspawns','0', false)
 
-function saver:GetSpawnDelay()
+function CWSaver:GetSpawnDelay()
   local addTime = NCfg:Get('Saver','Delay Between Single Propspawn')
   if NL and NL.CustomNet and NL.CustomNet.GetDelayBetweenSameNetStrings then
     addTime = addTime + NL.CustomNet.GetDelayBetweenSameNetStrings()
@@ -16,9 +14,9 @@ function saver:GetSpawnDelay()
   return addTime
 end
 
-local updTimer = 'CW-saver-update-cl-props'
+local updTimer = 'CWSaver-update-cl-props'
 
-function saver:SetClientProps()
+function CWSaver:SetClientProps()
   local ply = LocalPlayer()
   self:ClearClientProps()
   if self.previewCvar:GetBool() then
@@ -56,7 +54,7 @@ function saver:SetClientProps()
           cliProp:Spawn()
           self.ClientProps[i] = cliProp
         end
-        cliProp:SetNoDraw(!saver:CanProceedEnt(ply,cliProp,true) or !saver:IsPlyHolding(LocalPlayer()))
+        cliProp:SetNoDraw(!CWSaver:CanProceedEnt(ply,cliProp,true) or !CWSaver:IsPlyHolding(LocalPlayer()))
       end
     end)
   else
@@ -64,7 +62,7 @@ function saver:SetClientProps()
   end 
 end
 
-function saver:ClearClientProps()
+function CWSaver:ClearClientProps()
   if !table.IsEmpty(self.ClientProps) then
     for i, ent in pairs(self.ClientProps) do
       if IsValid(ent) then
@@ -75,7 +73,7 @@ function saver:ClearClientProps()
   end
 end
 
-function saver:SpawnEnts(tbl)
+function CWSaver:SpawnEnts(tbl)
   local coolDownTimeLeft = math.Round((self.LastSpawn +
     NCfg:Get('Saver','Save Cooldown'))-CurTime(),1)
 
@@ -88,16 +86,16 @@ function saver:SpawnEnts(tbl)
   self.InProgress = true
 
   timer.Create('NL Duplicator Progress Timer',(self:GetSpawnDelay()*table.Count(tbl)),1,function()
-    saver.LastSpawn = CurTime()
-    saver.InProgress = nil
-    saver.Abort = nil
+    CWSaver.LastSpawn = CurTime()
+    CWSaver.InProgress = nil
+    CWSaver.Abort = nil
   end)
 
   local useWPos = self.wPosCvar:GetBool()
   for i,data in pairs(tbl) do
     timer.Simple(self:GetSpawnDelay()*(i-1),function()
-      if saver.Abort then return end
-      net.Start(saver.netstr)
+      if CWSaver.Abort then return end
+      net.Start(CWSaver.netstr)
       if !useWPos then data.wpos = nil end
       if i == 1 then data.firstEnt = true end
       data.useWPos = (useWPos or nil)
@@ -108,3 +106,5 @@ function saver:SpawnEnts(tbl)
   RunConsoleCommand(self.previewCvar:GetName(),0)
   
 end
+
+CWSaver:debug('LIB CL LOADED!')

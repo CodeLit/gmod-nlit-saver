@@ -1,23 +1,21 @@
 TOOL.Category = 'Construction'
-TOOL.Name = '#tool.'..CW.Saver.tool..'.name'
+TOOL.Name = '#tool.'..CWSaver.tool..'.name'
 
 local l = CW:Lib('translator')
 
 if CLIENT then
 
-  local saver = CW.Saver
-
-  saver.LastSpawn = saver.LastSpawn or CurTime()
+  CWSaver.LastSpawn = CWSaver.LastSpawn or CurTime()
 
   function TOOL:BuildCPanel()
-    saver:CreateUI(self)
+    CWSaver:CreateUI(self)
   end
 
   local function SelectEnt(ent,bSelect)
     if !IsValid(ent) or !table.HasValue(NCfg:Get('Saver','Classes To Save'), ent:GetClass()) then
       return true
     else
-      saver.Ents[ent] = bSelect
+      CWSaver.Ents[ent] = bSelect
     end
     return true
   end
@@ -33,7 +31,7 @@ if CLIENT then
   local cantNotify
 
   function TOOL:Reload(tr)
-    saver.Ents = {}
+    CWSaver.Ents = {}
     if !cantNotify then
       LocalPlayer():Notify(l('Selection was cleared')..'.',2)
       cantNotify = true

@@ -1,10 +1,11 @@
 -- [do not obfuscate]
 
-local saver = CW.Saver
+local cvar_name = CWSaver.tool..'_preview'
 
-saver.previewCvar = CreateClientConVar(CW.Saver.tool..'_preview','0')
+CWSaver.previewCvar = CreateClientConVar(cvar_name,'0')
 
-cvars.AddChangeCallback(saver.previewCvar:GetName(), function(cName, old, new)
-  saver:SetClientProps()
+cvars.AddChangeCallback(cvar_name, function(cName, old, new)
+  CWSaver:SetClientProps()
 end)
 
+CWSaver:debug('CVARS LOADED!')

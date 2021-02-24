@@ -1,27 +1,31 @@
--- [do not obfuscate]
-
-CW = CW or {}
-CW.Saver = CW.Saver or {}
-CW.Saver.tool = 'cyber_saver'
-CW.Saver.netstr = 'Cyber Saver'
-CW.Saver.freezeCvarName = CW.Saver.tool..'_freeze'
-CW.Saver.dataDir = CW.Saver.tool
+CWSaver = CWSaver or {}
+CWSaver.tool = 'cyber_saver'
+CWSaver.netstr = 'Cyber Saver'
+CWSaver.freezeCvarName = CWSaver.tool..'_freeze'
+CWSaver.dataDir = CWSaver.tool
+CWSaver.Debug = true
 
 local Ents = CW:Lib('ents')
 local l = CW:Lib('translator')
 
-function CW.Saver:IsPlyHolding(ply)
-  local act = ply:GetActiveWeapon()
-  local tool = ply:GetTool()
-  return (IsValid(act) and act:GetClass() == 'gmod_tool' and tool
-    and tool.Mode == CW.Saver.tool)
+function CWSaver:debug(txt) -- print
+  if self.Debug then
+    cwp(txt)
+  end
 end
 
-function CW.Saver:CanProceedEnt(ply,ent,bDontNotify)
+function CWSaver:IsPlyHolding(ply)
+  local act = ply:GetActiveWeapon()
+  local tool = ply:GetTool()
+  return IsValid(act) and act:GetClass() == 'gmod_tool' and tool
+    and tool.Mode == self.tool
+end
+
+function CWSaver:CanProceedEnt(ply,ent,bDontNotify)
   if !IsValid(ply) or !IsValid(ent) then return end
-  local function Notify(ply,message)
+  local function Notify(pl,message)
     if !bDontNotify then
-      ply:Notify(message)
+      pl:Notify(message)
     end
   end
 
@@ -37,8 +41,14 @@ function CW.Saver:CanProceedEnt(ply,ent,bDontNotify)
     return false
   end
 
-  local tr = util.TraceLine({start=ply:EyePos(),endpos=ent:WorldSpaceCenter(),
-    filter = function(e) if e.SID != ply.SID then return true end end
+  local function filter(e)
+    if e.SID != ply.SID then return true end
+  end
+
+  local tr = util.TraceLine({
+    start=ply:EyePos(),
+    endpos=ent:WorldSpaceCenter(),
+    filter = filter
   })
 
   if tr.Hit then
@@ -53,3 +63,5 @@ function CW.Saver:CanProceedEnt(ply,ent,bDontNotify)
   
   return true
 end
+
+CWSaver:debug('LIB LOADED!')
