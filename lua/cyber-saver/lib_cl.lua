@@ -7,7 +7,7 @@ CWSaver.ClientProps = CWSaver.ClientProps or {}
 CWSaver.wPosCvar = CreateClientConVar(CWSaver.tool..'_worldposspawns','0', false)
 
 function CWSaver:GetSpawnDelay()
-  local addTime = NCfg:Get('Saver','Delay Between Single Propspawn')
+  local addTime = CWCfg:Get('Saver','Delay Between Single Propspawn')
   if NL and NL.CustomNet and NL.CustomNet.GetDelayBetweenSameNetStrings then
     addTime = addTime + NL.CustomNet.GetDelayBetweenSameNetStrings()
   end
@@ -75,7 +75,7 @@ end
 
 function CWSaver:SpawnEnts(tbl)
   local coolDownTimeLeft = math.Round((self.LastSpawn +
-    NCfg:Get('Saver','Save Cooldown'))-CurTime(),1)
+    CWCfg:Get('Saver','Save Cooldown'))-CurTime(),1)
 
   if coolDownTimeLeft >= 0 then
     LocalPlayer():Notify(l('Saver cannot work too often')..'.'..l('Time left')

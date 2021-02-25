@@ -56,7 +56,7 @@ net.Receive(CWSaver.netstr,function(_,ply)
 
     prop.SID = ply.SID
 
-    if NCfg:Get('Saver','Create Indestructible Items') then
+    if CWCfg:Get('Saver','Create Indestructible Items') then
         prop:SetVar('Unbreakable',true)
         prop:Fire('SetDamageFilter','FilterDamage',0)
     end

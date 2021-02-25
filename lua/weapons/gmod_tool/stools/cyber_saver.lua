@@ -12,7 +12,7 @@ if CLIENT then
   end
 
   local function SelectEnt(ent,bSelect)
-    if !IsValid(ent) or !table.HasValue(NCfg:Get('Saver','Classes To Save'), ent:GetClass()) then
+    if !IsValid(ent) or !table.HasValue(CWCfg:Get('Saver','Classes To Save'), ent:GetClass()) then
       return true
     else
       CWSaver.Ents[ent] = bSelect
