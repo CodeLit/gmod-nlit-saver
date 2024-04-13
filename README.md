@@ -1,2 +1,4 @@
-# gmod-cw-saver
-Простейший сохранятор расположения предметов для игроков
+# Gmod Nlit's Saver
+Simple props saver for easy on-server usage.
+
+Простейший сохранятор расположения предметов для игроков.
