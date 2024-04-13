@@ -7,7 +7,7 @@ nlitSaver.Debug = true
 local Ents = nlitLib:Lib('ents')
 local l = nlitLang
 function nlitSaver:debug(txt) -- print
-  if self.Debug then np(txt) end
+  if self.Debug then print('[Nlit\'s Saver][DEBUG] ' .. txt) end
 end
 
 function nlitSaver:IsPlyHolding(ply)
