@@ -1,9 +1,6 @@
 -- [do not obfuscate]
-
-CWSaver.savePath = CWSaver.dataDir..'/saves.txt'
-
-local Str = CW:Lib('strings')
-
+CWSaver.savePath = CWSaver.dataDir .. '/saves.txt'
+local Str = nlitString
 function CWSaver:GetSaves()
     return Str:FromJson(file.Read(self.savePath, 'DATA') or '') or {}
 end
@@ -15,7 +12,7 @@ end
 
 function CWSaver:GetSelectedSave()
     local sel = self.savesList:GetSelected()
-    if !sel or !sel[1] then return end
+    if not sel or not sel[1] then return end
     return self:GetSave(sel[1]:GetColumnText(1))
 end
 
@@ -33,7 +30,7 @@ function CWSaver:RemoveSave(saveName)
     self:WriteSaveData(data)
 end
 
-function CWSaver:RenameSave(old,new)
+function CWSaver:RenameSave(old, new)
     local data = self:GetSaves()
     data[new] = data[old]
     data[old] = nil
@@ -42,41 +39,44 @@ end
 
 function CWSaver:SaveEnts(saveName)
     local fl = self:GetSaves()
-    if !file.IsDir(self.dataDir,'DATA') then
-        file.CreateDir(self.dataDir)
-    end
+    if not file.IsDir(self.dataDir, 'DATA') then file.CreateDir(self.dataDir) end
     local function Write()
         if table.Count(self.Ents) <= 0 then return end
-        local tbl = {[1]=false}
-        for ent,_ in pairs(self.Ents) do
-            local instbl = {mdl = ent:GetModel()}
+        local tbl = {
+            [1] = false
+        }
+
+        for ent, _ in pairs(self.Ents) do
+            local instbl = {
+                mdl = ent:GetModel()
+            }
+
             instbl.ent = ent
             instbl.class = ent:GetClass()
             instbl.wpos = ent:GetPos()
             instbl.wang = ent:GetAngles()
             instbl.mat = ent:GetMaterial()
             -- Даём трасер в пол, и записываем высоту
-            local tr = util.QuickTrace(ent:GetPos(),
-                ent:WorldSpaceCenter()-Vector(0, 0, 3000), ent)
+            local tr = util.QuickTrace(ent:GetPos(), ent:WorldSpaceCenter() - Vector(0, 0, 3000), ent)
             instbl.startH = tr.StartPos.z - tr.HitPos.z
             local clr = ent:GetColor()
-            if clr != Color(255,255,255) then instbl.col = clr end
-            table.insert(tbl,instbl)
+            if clr ~= Color(255, 255, 255) then instbl.col = clr end
+            table.insert(tbl, instbl)
         end
+
         local rmID
-        for i,data in pairs(tbl) do
+        for i, data in pairs(tbl) do
             -- записать первый элемент как самый низкий по Z
-            if i != 1 then
-                if !tbl[1] then
-                    tbl[1] = data
-                end
+            if i ~= 1 then
+                if not tbl[1] then tbl[1] = data end
                 if data.wpos.z <= tbl[1].wpos.z then
                     tbl[1] = data
                     rmID = i
                 end
             end
         end
-        for i,data in pairs(tbl) do
+
+        for i, data in pairs(tbl) do
             if i == 1 then
                 data.lpos = data.wpos
                 data.lang = data.wang
@@ -85,17 +85,18 @@ function CWSaver:SaveEnts(saveName)
                 data.lang = tbl[1].ent:WorldToLocalAngles(data.wang)
             end
         end
-        table.remove(tbl,rmID)
+
+        table.remove(tbl, rmID)
         fl[saveName] = tbl
-        file.Write(self.savePath,util.TableToJSON(fl))
+        file.Write(self.savePath, util.TableToJSON(fl))
     end
-  
+
     if fl[saveName] then
-        NGUI:AcceptDialogue(l('Rewrite existing save')..' '
-        ..saveName..'?', 'Yes', 'No', Write)
+        NGUI:AcceptDialogue(l('Rewrite existing save') .. ' ' .. saveName .. '?', 'Yes', 'No', Write)
     else
         Write()
     end
+
     self.Ents = {}
 end
 
