@@ -1,13 +1,13 @@
 {
     "title": "CyberSaver",
-    "description": "Light (client) props saver for easilly on-server usage.",
+    "description": "Light (client) props saver for easily on-server usage.",
     "type": "tool",
     "tags": [
         "build",
         "roleplay"
     ],
     "ignore": [
-        "lua/cyber-saver/*",
+        "lua/nlit-saver/*",
         ".git/*",
         "README.md",
         "*.fig",

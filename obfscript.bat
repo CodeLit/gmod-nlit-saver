@@ -1,1 +1,1 @@
-py ../obfuscator/run.py %~dp0/lua/cyber-saver
+py ../obfuscator/run.py %~dp0/lua/nlit-saver
