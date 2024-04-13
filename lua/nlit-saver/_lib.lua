@@ -5,7 +5,7 @@ nlitSaver.freezeCvarName = nlitSaver.tool .. '_freeze'
 nlitSaver.dataDir = nlitSaver.tool
 nlitSaver.Debug = true
 local Ents = nlitLib:Lib('ents')
-local l = nlitLang
+local l = nlitLang.l
 function nlitSaver:debug(txt) -- print
   if self.Debug then print('[Nlit\'s Saver][DEBUG] ' .. txt) end
 end

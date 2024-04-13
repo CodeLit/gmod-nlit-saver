@@ -1,6 +1,6 @@
 TOOL.Category = 'Construction'
 TOOL.Name = '#tool.' .. nlitSaver.tool .. '.name'
-local l = nlitLang
+local l = nlitLang.l
 if CLIENT then
   nlitSaver.LastSpawn = nlitSaver.LastSpawn or CurTime()
   function TOOL:BuildCPanel()
