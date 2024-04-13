@@ -8,7 +8,7 @@ if CLIENT then
   end
 
   local function SelectEnt(ent, bSelect)
-    if not IsValid(ent) or not table.HasValue(CWCfg:Get('Saver', 'Classes To Save'), ent:GetClass()) then
+    if not IsValid(ent) or not table.HasValue(nlitCfg:Get('Saver', 'Classes To Save'), ent:GetClass()) then
       return true
     else
       CWSaver.Ents[ent] = bSelect

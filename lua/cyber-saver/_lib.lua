@@ -22,12 +22,12 @@ function CWSaver:CanProceedEnt(ply, ent, bDontNotify)
     if not bDontNotify then pl:Notify(message) end
   end
 
-  if not table.HasValue(CWCfg:Get('Saver', 'Classes To Save'), ent:GetClass()) and ent:GetClass() ~= 'class C_PhysPropClientside' then
+  if not table.HasValue(nlitCfg:Get('Saver', 'Classes To Save'), ent:GetClass()) and ent:GetClass() ~= 'class C_PhysPropClientside' then
     Notify(ply, l('The item must be a prop', ply:GetLang()) .. '!')
     return
   end
 
-  if ply:GetPos():Distance(ent:GetPos()) > CWCfg:Get('Saver', 'Max. Items Spawn Distance') then
+  if ply:GetPos():Distance(ent:GetPos()) > nlitCfg:Get('Saver', 'Max. Items Spawn Distance') then
     Notify(ply, l('There is too far for the object', ply:GetLang()) .. '!')
     return false
   end

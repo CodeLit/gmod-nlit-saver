@@ -1,5 +1,5 @@
 local l = nlitLang
-local CWC = CW:Lib('colors')
+local CWC = nlitColor
 hook.Add('HUDPaint', 'ENL Dulpicator Progress', function()
   if not CWSaver.InProgress or CWSaver.Abort then return end
   local text = l('Saver is creating objects') .. '...' .. math.Round(timer.TimeLeft('NL Duplicator Progress Timer'), 1)
