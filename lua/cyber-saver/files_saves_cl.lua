@@ -1,43 +1,43 @@
 -- [do not obfuscate]
-CWSaver.savePath = CWSaver.dataDir .. '/saves.txt'
+nlitSaver.savePath = nlitSaver.dataDir .. '/saves.txt'
 local Str = nlitString
-function CWSaver:GetSaves()
+function nlitSaver:GetSaves()
     return Str:FromJson(file.Read(self.savePath, 'DATA') or '') or {}
 end
 
-function CWSaver:GetSave(name)
+function nlitSaver:GetSave(name)
     local saves = self:GetSaves()
     return saves[name] or nil
 end
 
-function CWSaver:GetSelectedSave()
+function nlitSaver:GetSelectedSave()
     local sel = self.savesList:GetSelected()
     if not sel or not sel[1] then return end
     return self:GetSave(sel[1]:GetColumnText(1))
 end
 
-function CWSaver:WriteSaveData(tbl)
+function nlitSaver:WriteSaveData(tbl)
     return file.Write(self.savePath, Str:ToJson(tbl))
 end
 
-function CWSaver:SaveExists(saveName)
+function nlitSaver:SaveExists(saveName)
     return tobool(self:GetSave(saveName))
 end
 
-function CWSaver:RemoveSave(saveName)
+function nlitSaver:RemoveSave(saveName)
     local data = self:GetSaves()
     data[saveName] = nil
     self:WriteSaveData(data)
 end
 
-function CWSaver:RenameSave(old, new)
+function nlitSaver:RenameSave(old, new)
     local data = self:GetSaves()
     data[new] = data[old]
     data[old] = nil
     self:WriteSaveData(data)
 end
 
-function CWSaver:SaveEnts(saveName)
+function nlitSaver:SaveEnts(saveName)
     local fl = self:GetSaves()
     if not file.IsDir(self.dataDir, 'DATA') then file.CreateDir(self.dataDir) end
     local function Write()
@@ -100,4 +100,4 @@ function CWSaver:SaveEnts(saveName)
     self.Ents = {}
 end
 
-CWSaver:debug('FILES SAVES LOADED!')
+nlitSaver:debug('FILES SAVES LOADED!')

@@ -1,16 +1,16 @@
 -- [do not obfuscate]
 local l = nlitLang
-CWSaver.Ents = CWSaver.Ents or {}
-CWSaver.ClientProps = CWSaver.ClientProps or {}
-CWSaver.wPosCvar = CreateClientConVar(CWSaver.tool .. '_worldposspawns', '0', false)
-function CWSaver:GetSpawnDelay()
+nlitSaver.Ents = nlitSaver.Ents or {}
+nlitSaver.ClientProps = nlitSaver.ClientProps or {}
+nlitSaver.wPosCvar = CreateClientConVar(nlitSaver.tool .. '_worldposspawns', '0', false)
+function nlitSaver:GetSpawnDelay()
   local addTime = nlitCfg:Get('Saver', 'Delay Between Single Propspawn')
   if NL and NL.CustomNet and NL.CustomNet.GetDelayBetweenSameNetStrings then addTime = addTime + NL.CustomNet.GetDelayBetweenSameNetStrings() end
   return addTime
 end
 
-local updTimer = 'CWSaver-update-cl-props'
-function CWSaver:SetClientProps()
+local updTimer = 'nlitSaver-update-cl-props'
+function nlitSaver:SetClientProps()
   local ply = LocalPlayer()
   self:ClearClientProps()
   if self.previewCvar:GetBool() then
@@ -49,7 +49,7 @@ function CWSaver:SetClientProps()
           self.ClientProps[i] = cliProp
         end
 
-        cliProp:SetNoDraw(not CWSaver:CanProceedEnt(ply, cliProp, true) or not CWSaver:IsPlyHolding(LocalPlayer()))
+        cliProp:SetNoDraw(not nlitSaver:CanProceedEnt(ply, cliProp, true) or not nlitSaver:IsPlyHolding(LocalPlayer()))
       end
     end)
   else
@@ -57,7 +57,7 @@ function CWSaver:SetClientProps()
   end
 end
 
-function CWSaver:ClearClientProps()
+function nlitSaver:ClearClientProps()
   if not table.IsEmpty(self.ClientProps) then
     for i, ent in pairs(self.ClientProps) do
       if IsValid(ent) then ent:Remove() end
@@ -66,7 +66,7 @@ function CWSaver:ClearClientProps()
   end
 end
 
-function CWSaver:SpawnEnts(tbl)
+function nlitSaver:SpawnEnts(tbl)
   local coolDownTimeLeft = math.Round((self.LastSpawn + nlitCfg:Get('Saver', 'Save Cooldown')) - CurTime(), 1)
   if coolDownTimeLeft >= 0 then
     LocalPlayer():Notify(l('Saver cannot work too often') .. '.' .. l('Time left') .. ': ' .. coolDownTimeLeft .. ' ' .. l('sec') .. '.')
@@ -76,16 +76,16 @@ function CWSaver:SpawnEnts(tbl)
   if self.InProgress then return end
   self.InProgress = true
   timer.Create('NL Duplicator Progress Timer', self:GetSpawnDelay() * table.Count(tbl), 1, function()
-    CWSaver.LastSpawn = CurTime()
-    CWSaver.InProgress = nil
-    CWSaver.Abort = nil
+    nlitSaver.LastSpawn = CurTime()
+    nlitSaver.InProgress = nil
+    nlitSaver.Abort = nil
   end)
 
   local useWPos = self.wPosCvar:GetBool()
   for i, data in pairs(tbl) do
     timer.Simple(self:GetSpawnDelay() * (i - 1), function()
-      if CWSaver.Abort then return end
-      net.Start(CWSaver.netstr)
+      if nlitSaver.Abort then return end
+      net.Start(nlitSaver.netstr)
       if not useWPos then data.wpos = nil end
       if i == 1 then data.firstEnt = true end
       data.useWPos = useWPos or nil
@@ -97,4 +97,4 @@ function CWSaver:SpawnEnts(tbl)
   RunConsoleCommand(self.previewCvar:GetName(), 0)
 end
 
-CWSaver:debug('LIB CL LOADED!')
+nlitSaver:debug('LIB CL LOADED!')

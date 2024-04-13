@@ -1,9 +1,9 @@
 -- [do not obfuscate]
-local freezeCvar = CreateClientConVar(CWSaver.freezeCvarName, '0', true, true)
+local freezeCvar = CreateClientConVar(nlitSaver.freezeCvarName, '0', true, true)
 local l = nlitLang
 local Buttons = CW:Lib('buttons')
 local Frames = CW:Lib('frames')
-function CWSaver:CreateUI(toolObj)
+function nlitSaver:CreateUI(toolObj)
   local function AddButton(btn)
     local pnl = toolObj:Add('DPanel')
     pnl:SetTall(30)
@@ -34,7 +34,7 @@ function CWSaver:CreateUI(toolObj)
     if string.find(txt, saveText .. ' ') == 1 and exp[2] then
       local num = tonumber(exp[2])
       if isnumber(num) then
-        local svs = CWSaver:GetSaves()
+        local svs = nlitSaver:GetSaves()
         while svs[saveText .. ' ' .. num] do
           num = num + 1
         end
@@ -76,7 +76,7 @@ function CWSaver:CreateUI(toolObj)
   self.savesList = saves
   function saves:Upd()
     self:Clear()
-    for s, _ in pairs(CWSaver:GetSaves()) do
+    for s, _ in pairs(nlitSaver:GetSaves()) do
       self:AddLine(s)
     end
   end
@@ -126,4 +126,4 @@ function CWSaver:CreateUI(toolObj)
   end
 end
 
-CWSaver:debug('UI LOADED!')
+nlitSaver:debug('UI LOADED!')

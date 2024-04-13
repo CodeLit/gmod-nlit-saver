@@ -1,5 +1,5 @@
 local firstEnts = {}
-net.Receive(CWSaver.netstr, function(_, ply)
+net.Receive(nlitSaver.netstr, function(_, ply)
     local data = net.ReadTable()
     if not (isvector(data.wpos) or isvector(data.lpos)) or not isangle(data.wang) or not isstring(data.mdl) then return end
     if not hook.Run('PlayerSpawnProp', ply, data.mdl) then return end
@@ -36,8 +36,8 @@ net.Receive(CWSaver.netstr, function(_, ply)
     prop:Spawn()
     -- Фризинг
     local phys = prop:GetPhysicsObject()
-    if phys then phys:EnableMotion(not tobool(ply:GetInfo(CWSaver.freezeCvarName))) end
-    if not CWSaver:CanProceedEnt(ply, prop) then
+    if phys then phys:EnableMotion(not tobool(ply:GetInfo(nlitSaver.freezeCvarName))) end
+    if not nlitSaver:CanProceedEnt(ply, prop) then
         prop:Remove()
         return
     end
@@ -68,4 +68,4 @@ net.Receive(CWSaver.netstr, function(_, ply)
     if data.firstEnt then firstEnts[ply:SteamID()] = prop end
 end)
 
-CWSaver:debug('NET LOADED!')
+nlitSaver:debug('NET LOADED!')

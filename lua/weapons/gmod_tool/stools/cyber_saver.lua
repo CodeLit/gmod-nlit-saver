@@ -1,17 +1,17 @@
 TOOL.Category = 'Construction'
-TOOL.Name = '#tool.' .. CWSaver.tool .. '.name'
+TOOL.Name = '#tool.' .. nlitSaver.tool .. '.name'
 local l = nlitLang
 if CLIENT then
-  CWSaver.LastSpawn = CWSaver.LastSpawn or CurTime()
+  nlitSaver.LastSpawn = nlitSaver.LastSpawn or CurTime()
   function TOOL:BuildCPanel()
-    CWSaver:CreateUI(self)
+    nlitSaver:CreateUI(self)
   end
 
   local function SelectEnt(ent, bSelect)
     if not IsValid(ent) or not table.HasValue(nlitCfg:Get('Saver', 'Classes To Save'), ent:GetClass()) then
       return true
     else
-      CWSaver.Ents[ent] = bSelect
+      nlitSaver.Ents[ent] = bSelect
     end
     return true
   end
@@ -26,7 +26,7 @@ if CLIENT then
 
   local cantNotify
   function TOOL:Reload(tr)
-    CWSaver.Ents = {}
+    nlitSaver.Ents = {}
     if not cantNotify then
       LocalPlayer():Notify(l('Selection was cleared') .. '.', 2)
       cantNotify = true

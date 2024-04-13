@@ -1,22 +1,22 @@
-CWSaver = CWSaver or {}
-CWSaver.tool = 'cyber_saver'
-CWSaver.netstr = 'Cyber Saver'
-CWSaver.freezeCvarName = CWSaver.tool .. '_freeze'
-CWSaver.dataDir = CWSaver.tool
-CWSaver.Debug = true
+nlitSaver = nlitSaver or {}
+nlitSaver.tool = 'cyber_saver'
+nlitSaver.netstr = 'Cyber Saver'
+nlitSaver.freezeCvarName = nlitSaver.tool .. '_freeze'
+nlitSaver.dataDir = nlitSaver.tool
+nlitSaver.Debug = true
 local Ents = CW:Lib('ents')
 local l = nlitLang
-function CWSaver:debug(txt) -- print
+function nlitSaver:debug(txt) -- print
   if self.Debug then np(txt) end
 end
 
-function CWSaver:IsPlyHolding(ply)
+function nlitSaver:IsPlyHolding(ply)
   local act = ply:GetActiveWeapon()
   local tool = ply:GetTool()
   return IsValid(act) and act:GetClass() == 'gmod_tool' and tool and tool.Mode == self.tool
 end
 
-function CWSaver:CanProceedEnt(ply, ent, bDontNotify)
+function nlitSaver:CanProceedEnt(ply, ent, bDontNotify)
   if not IsValid(ply) or not IsValid(ent) then return end
   local function Notify(pl, message)
     if not bDontNotify then pl:Notify(message) end
@@ -54,4 +54,4 @@ function CWSaver:CanProceedEnt(ply, ent, bDontNotify)
   return true
 end
 
-CWSaver:debug('LIB LOADED!')
+nlitSaver:debug('LIB LOADED!')
