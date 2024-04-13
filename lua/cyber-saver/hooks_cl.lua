@@ -1,5 +1,5 @@
 local l = nlitLang
-local CWC = nlitColor
+local NC = nlitColor
 hook.Add('HUDPaint', 'ENL Dulpicator Progress', function()
   if not nlitSaver.InProgress or nlitSaver.Abort then return end
   local text = l('Saver is creating objects') .. '...' .. math.Round(timer.TimeLeft('NL Duplicator Progress Timer'), 1)
@@ -45,8 +45,8 @@ hook.Add('PreDrawHalos', 'ENL Duplicator Draw', function()
       end
     end
 
-    halo.Add(haloWhiteEnts, CWC:White(), 1, 1, 15, true, true)
-    halo.Add(haloRedEnts, CWC:Red(), 1, 1, 15, true, true)
+    halo.Add(haloWhiteEnts, NC:White(), 1, 1, 15, true, true)
+    halo.Add(haloRedEnts, NC:Red(), 1, 1, 15, true, true)
   end
 end)
 

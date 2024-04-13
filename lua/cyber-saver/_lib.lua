@@ -4,7 +4,7 @@ nlitSaver.netstr = 'Cyber Saver'
 nlitSaver.freezeCvarName = nlitSaver.tool .. '_freeze'
 nlitSaver.dataDir = nlitSaver.tool
 nlitSaver.Debug = true
-local Ents = CW:Lib('ents')
+local Ents = nlitLib:Lib('ents')
 local l = nlitLang
 function nlitSaver:debug(txt) -- print
   if self.Debug then np(txt) end
