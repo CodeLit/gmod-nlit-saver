@@ -1,6 +1,6 @@
 nlitSaver = nlitSaver or {}
-nlitSaver.tool = 'cyber_saver'
-nlitSaver.netstr = 'Cyber Saver'
+nlitSaver.tool = 'nlit_saver'
+nlitSaver.netstr = 'nlit Saver'
 nlitSaver.freezeCvarName = nlitSaver.tool .. '_freeze'
 nlitSaver.dataDir = nlitSaver.tool
 nlitSaver.Debug = true
