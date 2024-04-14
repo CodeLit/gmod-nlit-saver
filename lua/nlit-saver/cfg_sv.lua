@@ -1,0 +1,10 @@
+local name = 'Saver'
+nlitCfg:AddAddon(name)
+nlitCfg:Set(name, 'Max. Items Spawn Distance', 500, 'num')
+nlitCfg:Set(name, 'Delay Between Single Propspawn', 0.5, 'num')
+nlitCfg:Set(name, 'Save Cooldown', 5, 'num')
+nlitCfg:Set(name, 'Classes To Save', {'prop_physics'}, 'table')
+nlitCfg:Set(name, 'Create Indestructible Items', true, 'bool')
+-- NCfg:Set(name,'Текстовое поле 1','300','text')
+util.AddNetworkString(nlitSaver.netstr)
+nlitSaver:debug('CFG LOADED!')

@@ -1,6 +1,5 @@
-local lang = CW:Lib('language')
-
-lang:AddTranslation('ru',{
+local lang = nlitLib:Load('translator')
+lang:AddTranslation('ru', {
     ['Save items'] = 'Сохранить предметы',
     ['Classes To Save'] = 'Сохраняемые классы',
     ['Max. Items Spawn Distance'] = 'Макс. расстояние спавна предметов',
@@ -28,7 +27,7 @@ lang:AddTranslation('ru',{
     ['The item must be a prop'] = 'Предмет должен быть пропом',
     ['There is too far for the object'] = 'Слишком большое расстояние до предмета',
     ['Player is blocking item spawn'] = 'Игрок блокирует спавн предмета',
-   -- ['Item is blocking item spawn'] = 'Предмет блокирует спавн другого предмета',
+    -- ['Item is blocking item spawn'] = 'Предмет блокирует спавн другого предмета',
     ['Saver cannot work too often'] = 'Сохранятор не может работать так часто',
     ['Time left'] = 'Осталось',
     ['sec.'] = 'сек.',
