@@ -1,5 +1,5 @@
 local l = nlitLib:Load('lang')
-local NC = nlitColor
+local NC = NC
 hook.Add('HUDPaint', 'ENL Dulpicator Progress', function()
   if not nlitSaver.InProgress or nlitSaver.Abort then return end
   local text = l('Saver is creating objects') .. '...' .. math.Round(timer.TimeLeft('NL Duplicator Progress Timer'), 1)
