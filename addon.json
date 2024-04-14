@@ -7,7 +7,6 @@
         "roleplay"
     ],
     "ignore": [
-        "lua/nlit-saver/*",
         ".git/*",
         "README.md",
         "*.fig",

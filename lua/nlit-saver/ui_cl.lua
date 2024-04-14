@@ -1,4 +1,3 @@
--- [do not obfuscate]
 local freezeCvar = CreateClientConVar(nlitSaver.freezeCvarName, '0', true, true)
 local l = nlitLib:Load('lang')
 local Buttons = nlitLib:Load('buttons')
