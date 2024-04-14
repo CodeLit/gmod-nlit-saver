@@ -1,8 +1,8 @@
 -- [do not obfuscate]
 local freezeCvar = CreateClientConVar(nlitSaver.freezeCvarName, '0', true, true)
 local l = nlitLang.l
-local Buttons = nlitLib:Lib('buttons')
-local Frames = nlitLib:Lib('frames')
+local Buttons = nlitLib:Load('buttons')
+local Frames = nlitLib:Load('frames')
 function nlitSaver:CreateUI(toolObj)
   local function AddButton(btn)
     local pnl = toolObj:Add('DPanel')
