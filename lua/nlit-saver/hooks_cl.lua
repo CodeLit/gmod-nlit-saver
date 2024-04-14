@@ -1,4 +1,4 @@
-local l = nlitLang.l
+local l = nlitLib:Load('lang')
 local NC = nlitColor
 hook.Add('HUDPaint', 'ENL Dulpicator Progress', function()
   if not nlitSaver.InProgress or nlitSaver.Abort then return end

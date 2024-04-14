@@ -1,4 +1,4 @@
-local lang = nlitLang
+local lang = nlitLib:Load('translator')
 lang:AddTranslation('ru', {
     ['Save items'] = 'Сохранить предметы',
     ['Classes To Save'] = 'Сохраняемые классы',

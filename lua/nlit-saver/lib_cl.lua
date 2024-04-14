@@ -1,5 +1,5 @@
 -- [do not obfuscate]
-local l = nlitLang.l
+local l = nlitLib:Load('lang')
 nlitSaver.Ents = nlitSaver.Ents or {}
 nlitSaver.ClientProps = nlitSaver.ClientProps or {}
 nlitSaver.wPosCvar = CreateClientConVar(nlitSaver.tool .. '_worldposspawns', '0', false)

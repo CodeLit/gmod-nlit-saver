@@ -1,6 +1,6 @@
 -- [do not obfuscate]
 local freezeCvar = CreateClientConVar(nlitSaver.freezeCvarName, '0', true, true)
-local l = nlitLang.l
+local l = nlitLib:Load('lang')
 local Buttons = nlitLib:Load('buttons')
 local Frames = nlitLib:Load('frames')
 function nlitSaver:CreateUI(toolObj)
