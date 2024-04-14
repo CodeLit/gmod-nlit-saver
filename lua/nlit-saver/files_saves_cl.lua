@@ -1,4 +1,3 @@
--- [do not obfuscate]
 nlitSaver.savePath = nlitSaver.dataDir .. '/saves.txt'
 local Str = nlitString
 function nlitSaver:GetSaves()

@@ -1,4 +1,3 @@
--- [do not obfuscate]
 local l = nlitLib:Load('lang')
 nlitSaver.Ents = nlitSaver.Ents or {}
 nlitSaver.ClientProps = nlitSaver.ClientProps or {}
