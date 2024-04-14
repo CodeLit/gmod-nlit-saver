@@ -1,5 +1,5 @@
 # Gmod Nlit's Saver
-Simple props saver for easy on-server usage.
+Simple props saver for easy building.
 
 Good choice for DarkRP.
 
